@@ -1,0 +1,83 @@
+server: 
+  compression:
+    enabled: true
+spring: 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.x.y:3306/crawler_db?useUnicode=true&characterEncoding=UTF-8&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: user
+    password: name
+    hikari:
+      connection-test-query: select 1 from dual
+  data:
+    mongodb:
+      host: 192.168.x.y
+      port: 27017
+      username: user
+      password: pwd
+      authentication-database: db
+      database: db
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  # sleuth   
+  sleuth:
+    web:
+      enabled: true
+    sampler:
+      probability: 1.0
+  # zipkin配置（有2种通信方式，http和消息中间件：rabbitmq,kafka等），spring cloud hoxton后需要配置此通信类型 ，不然会报：I/O error on POST request for "http://localhost:9411/api/v2/spans": connect timed out
+  zipkin:
+    sender:
+      type: rabbit    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+zuul:
+  host:
+    connect-timeout-millis: 180000  # 3 min
+    connection-request-timeout-millis: 180000
+    socket-timeout-millis: 180000        
+ribbon: 
+  ReadTimeout: 180000
+  ConnectTimeout: 180000 
+  # config for tx-lcn
+  MaxAutoRetriesNextServer: 0
+feign:
+  # enabling the request or response GZIP compression for your Feign requests 
+  compression:
+    request:
+      enabled: true
+      mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml
+      min-request-size: 2048
+    response: 
+      enabled: true  
+      useGzipDecoder: true # feign客户端会报出 Illegal character ((CTRL-CHAR, code 31)): only regular white space 的错误，因为默认不支持gzip数据解析
+          
+# tx-lcn distributed transaction client config  
+tx-lcn: 
+  client: 
+    # Multiple separated by ",",such as 127.0.0.1:8070,127.0.0.2:8070
+    manager-address: 127.0.0.1:8070
+  ribbon: 
+    loadbalancer: 
+      dtx: 
+        enabled: true
+        
+common: 
+  test: this is a common config 1212121
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

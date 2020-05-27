@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.efe.ms</groupId>
+  <artifactId>ms-service-consumer</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <name>ms-service-consumer</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+  </properties>
+  
+  <!-- 依赖父项目 -->
+  <parent>
+    <groupId>com.efe.ms</groupId>
+    <artifactId>ms-parent</artifactId>
+    <version>Hoxton.SR4</version>
+    <relativePath>../ms-parent/pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+    <!-- spring data jpa -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>  
+    <!-- mysql 驱动 -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+    <!-- swagger --> 
+      <dependency>
+          <groupId>io.springfox</groupId>
+          <artifactId>springfox-swagger2</artifactId>
+          <version>${swagger.version}</version>
+      </dependency> 
+
+      <!-- lombok -->
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>${lombok.version}</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.efe.ms</groupId>
+          <artifactId>ms-common</artifactId>
+          <version>${ms-common.version}</version>
+      </dependency>
+  </dependencies>
+</project>

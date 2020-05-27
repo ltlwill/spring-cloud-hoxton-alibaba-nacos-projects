@@ -1,0 +1,40 @@
+-- 创建管理员 admin	 
+db.createUser(
+  {
+    user: "admin",
+    pwd: passwordPrompt(),
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+  }
+)	
+	
+-- 创建用户	test
+db.createUser(
+  {
+    user: "test",
+    pwd:  passwordPrompt(),
+    roles: [ { role: "readWrite", db: "test" },
+             { role: "read", db: "reporting" } ]
+  }
+)
+-- 创建用户	crawler
+db.createUser(
+  {
+    user: "crawler",
+    pwd:  passwordPrompt(),
+    roles: [ { role: "readWrite", db: "crawler" },
+             { role: "read", db: "reporting" } ]
+  }
+)
+-- 创建用户 reportsUser
+db.createUser(
+  {
+    user: "reportsUser",
+    pwd: passwordPrompt(),
+    roles: [
+       { role: "read", db: "reporting" },
+       { role: "read", db: "products" },
+       { role: "read", db: "sales" },
+       { role: "readWrite", db: "accounts" }
+    ]
+  }
+)

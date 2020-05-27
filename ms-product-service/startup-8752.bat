@@ -1,0 +1,1 @@
+java -jar target/ms-product-service-1.0.jar --server.port=8752

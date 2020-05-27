@@ -1,0 +1,224 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.efe.ms</groupId>
+    <artifactId>ms-parent</artifactId>
+    <version>Hoxton.SR4</version>
+    <packaging>pom</packaging>
+
+    <name>ms-parent</name>
+    <url>http://maven.apache.org</url>
+    
+    <!-- spring boot parent 2.1.3.RELEASE -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.5.RELEASE</version>
+    </parent>
+    
+    <!-- 如果不配置 modules,则在父pom中执行打包时，不会有项目触发打包操作 -->
+    <!-- <modules>
+    	<module>../ms-common</module>
+    	<module>../ms-product-service</module>
+    </modules> -->
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+        <spring-cloud-starter-alibaba-nacos.version>2.2.1.RELEASE</spring-cloud-starter-alibaba-nacos.version>
+        <!-- 使用默认依赖的 2.22.2 时打包失败，换成2.22.1 -->
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <!-- <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version> -->
+        <junit.version>4.12</junit.version>
+        <swagger.version>2.9.2</swagger.version>
+        <lombok.version>1.18.12</lombok.version>
+        <commons-lang3.version>3.10</commons-lang3.version>
+        <!-- <spring-cloud-alibaba-seata.version>0.9.0.RELEASE</spring-cloud-alibaba-seata.version> -->
+        <tx-lcn.version>5.0.2.RELEASE</tx-lcn.version>
+        <ms-common.version>1.0</ms-common.version>
+    </properties>
+
+    <!-- spring cloud base -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+    
+        <!-- spring-cloud-alibaba begin -->
+        <dependency>
+		    <groupId>com.alibaba.cloud</groupId>
+		    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		    <version>${spring-cloud-starter-alibaba-nacos.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.alibaba.cloud</groupId>
+		    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+		    <version>${spring-cloud-starter-alibaba-nacos.version}</version>
+		</dependency>
+		<!-- spring-cloud-alibaba  end -->
+        
+        <!-- Feign，使用feign时不需要再次依赖ribbon、hystrix了，默认已经依赖了，feign是一个声明式的Web Service客户端，它使得编写Web Serivce客户端变得更加简单，整合了Ribbon和Eureka来提供均衡负载的HTTP客户端实现 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        
+        <!-- hystrix 断路器(feign中已经依赖了，使用@SpringCloudApplication时还会报:java.lang.NoClassDefFoundError: com/netflix/hystrix/contrib/javanica/aop/aspectj/HystrixCommandAspect) -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+    
+        
+        <!-- WTF：这个版本要依赖 spring-boot-starter-web才能有tomcat-embed-core,tomcat-embed-websokect的jar包，Finchely版本不需要，会从 spring-boot-starter-actuator依赖过来-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- spring boot actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- spring cloud bus -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+        </dependency>
+        
+        <!-- sleuth -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+        <!-- zipkin -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+        
+        <!-- spring cloud security 实现eureka服务注册中心开启用户认证，即：需要用户密码登录才能看eureka注册中心界面-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
+        </dependency>
+        
+        <!-- spring cloud oAuth2 -->
+       <!-- <dependency>
+           <groupId>org.springframework.cloud</groupId>
+           <artifactId>spring-cloud-starter-oauth2</artifactId>
+       </dependency> -->
+       
+       <!-- 1. alibaba seata distributed transaction -->
+        <!-- <dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-alibaba-seata</artifactId>
+		    <version>${spring-cloud-alibaba-seata.version}</version>
+		</dependency> -->
+		
+		<!-- 2. tx-lcn distributed transaction -->
+		<dependency>
+			<groupId>com.codingapi.txlcn</groupId>
+			<artifactId>txlcn-tc</artifactId>
+			<version>${tx-lcn.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.codingapi.txlcn</groupId>
+			<artifactId>txlcn-txmsg-netty</artifactId>
+			<version>${tx-lcn.version}</version>
+		</dependency>
+       
+        <!-- 热部署 -->       
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- spring boot test-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- log4j2依赖 --> 
+        <!-- <dependency>  
+            <groupId>org.springframework.boot</groupId>  
+            <artifactId>spring-boot-starter-log4j2</artifactId>  
+        </dependency>  -->
+        <!-- 加上这个才能辨认到log4j2.yml文件 -->
+        <!-- <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+        </dependency> -->
+ 
+        <!-- junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    
+    <!-- 因为有些模块是公依赖的共模块且没有main函数 ，所以不能再公共pom里定义打包配置 -->
+   <!--  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-maven-plugin</artifactId>
+              <configuration>
+                  <fork>true</fork>
+                  <addResources>true</addResources>
+              </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>${maven-surefire-plugin.version}</version>
+              <configuration>
+                  <skipTests>true</skipTests>
+              </configuration>
+          </plugin>
+      </plugins>
+    </build> -->
+  
+   <!--  <repositories>
+        
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring</id>
+            <url>https://maven.aliyun.com/repository/spring</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories> -->
+</project>

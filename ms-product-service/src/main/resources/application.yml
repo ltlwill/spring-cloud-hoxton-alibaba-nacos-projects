@@ -1,0 +1,80 @@
+# 服务器配置
+server:
+  port: 8310
+  compression:
+    enabled: true
+  servlet: 
+    context-path: /
+
+# eureka客户端（即服务提供者）,集群
+spring:
+  #application:
+    #name: product-service
+  #profiles:
+    #active: dev
+    
+  # 数据源配置  (已放到spring cloud config配置中心)
+  #datasource: 
+    # Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'.
+    #driver-class-name: com.mysql.jdbc.Driver
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://192.168.x.y:3306/db_ebay?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&useSSL=true&zeroDateTimeBehavior=convertToNull
+    #username: user
+    #password: pwd
+    
+  # Spring data JPA配置
+  jpa:
+    hibernate:
+      naming:
+        # 解决列名都配置正确，但是还是出现SQL Error: 1054, SQLState: 42S22 Unknown column in 'field list' error的问题
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl 
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true     
+  
+  # zipkin 配置(使用MQ，如:rabbitmq来收集trace信息时就不需要配置了)
+  #zipkin: 
+    #base-url: http://localhost:8720  # 指定了Zipkin服务器的地址
+    
+  # sleuth 配置    
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler: 
+      probability: 1.0 # 采样比例为: 0.1(即10%),设置的值介于0.0到1.0之间，1.0则表示全部采集。
+      # percentage: 1.0 # 采样比例为: 0.1(即10%),设置的值介于0.0到1.0之间，1.0则表示全部采集。spring boot2.0之前
+        
+# eureka服务配置 (放到bootstrap里面了)
+#eureka:
+  #instance:
+    # 在springcloud中服务的 Instance ID 默认值是:${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${server.port}},也就是：主机名：应用名：应用端口
+    #instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    #hostname: ${spring.cloud.client.ip-address}
+  #client:
+    #serviceUrl:
+      # 注册到单服务中心
+      #defaultZone: http://eureka_admin:eureka_admin_123@localhost:8761/eureka/
+      # 注册到高可用的服务中心（集群）
+      # 无认证
+      # defaultZone: http://peer1:8761/eureka/,http://peer2:8762/eureka/,http://peer3:8763/eureka/
+      # 需认证版（规则：http://user:password@host:port/eureka/）
+      #defaultZone: http://eureka_admin:eureka_admin_123@peer1:8761/eureka/,http://eureka_admin:eureka_admin_123@peer2:8762/eureka/,http://eureka_admin:eureka_admin_123@peer3:8763/eureka/
+management: 
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  # WTF: spring cloud Greenwich+spring boot 2.1.3配置了endpoint.show-details，会导致启动 失败, Failed to bind properties under 'management.endpoint.health.show-details' to org.springframework.boot.actuate.health.ShowDetails
+  # ,Property: management.endpoint.health.show-details,Value: always        
+  #endpoint:
+    #health:
+      #show-details: always 
+# 日志配置
+logging:
+  config: classpath:logback-${spring.profiles.active}.xml
+  
+

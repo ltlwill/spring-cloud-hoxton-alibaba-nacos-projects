@@ -1,0 +1,98 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.efe.ms</groupId>
+  <artifactId>ms-product-service</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <name>ms-product-service</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+  	  <!-- <start-class>com.efe.ms.productservice.ProductServiceApplication</start-class> -->
+  </properties>
+  
+  <!-- 依赖父项目 -->
+  <parent>
+      <groupId>com.efe.ms</groupId>
+      <artifactId>ms-parent</artifactId>
+      <version>Hoxton.SR4</version>
+      <relativePath>../ms-parent/pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+      <!-- spring data jpa -->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-data-jpa</artifactId>
+      </dependency>  
+      <!-- mysql 驱动 -->
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+      </dependency>
+      <!-- swagger --> 
+      <dependency>
+          <groupId>io.springfox</groupId>
+          <artifactId>springfox-swagger2</artifactId>
+          <version>${swagger.version}</version>
+      </dependency> 
+	  
+	  
+      <!-- lombok -->
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>${lombok.version}</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+	      <groupId>org.apache.commons</groupId>
+	      <artifactId>commons-lang3</artifactId>
+	      <version>${commons-lang3.version}</version>
+	  </dependency>
+	  <dependency>
+          <groupId>com.efe.ms</groupId>
+          <artifactId>ms-common</artifactId>
+          <version>${ms-common.version}</version>
+      </dependency>
+  </dependencies>
+  
+  <!-- 注：因为依赖了 ms-common公共模块，目前只能在 parent项目(ms-parent)中去执行打包操作，在此项目下执行打包，则会失败（找不到依赖的ms-common.jar包） -->
+  <build>
+  	<plugins>
+		<plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+                <!-- 没有该配置，devtools 不生效 -->
+                <fork>true</fork>
+                <addResources>true</addResources>
+                <!-- <classifier>exe</classifier> -->
+                <!-- <classifier>exec</classifier> -->
+                <!-- <mainClass>${start-class}</mainClass> -->
+                <!-- <mainClass>com.efe.ms.productservice.ProductServiceApplication</mainClass>-->
+                <!--<layout>ZIP</layout> -->
+            </configuration>
+           <!--  <executions>
+            	<execution>
+            		<id>repackage</id>
+            		<goals>
+            			<goal>repackage</goal>
+            		</goals>
+            	</execution>
+            </executions> -->
+        </plugin>
+        <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>${maven-surefire-plugin.version}</version>
+              <configuration>
+                  <skipTests>true</skipTests>
+              </configuration>
+          </plugin>
+  	</plugins>
+  </build>
+</project>

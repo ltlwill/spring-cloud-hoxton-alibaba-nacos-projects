@@ -1,0 +1,49 @@
+common: 
+  test: this is a common config xiha112 嘻嘻
+server: 
+  compression:
+    enabled: true
+spring: 
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  sleuth:
+    web:
+      enabled: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    sender:
+      type: rabbit    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+zuul:
+  host:
+    connect-timeout-millis: 180000  # 3 min
+    connection-request-timeout-millis: 180000
+    socket-timeout-millis: 180000        
+ribbon: 
+  ReadTimeout: 180000
+  ConnectTimeout: 180000 
+  MaxAutoRetriesNextServer: 0
+feign:
+  compression:
+    request:
+      enabled: true
+      mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml
+      min-request-size: 2048
+    response: 
+      enabled: true  
+          
+tx-lcn: 
+  client: 
+    manager-address: 127.0.0.1:8070
+  ribbon: 
+    loadbalancer: 
+      dtx: 
+        enabled: true

@@ -1,0 +1,19 @@
+# 注册到单个服务中心
+spring:
+  application:
+    name: eureka-client
+
+# 服务器配置
+server:
+  # 指定该Eureka实例的端口
+  port: 8310
+  
+# eureka服务配置
+eureka:
+  instance:
+    hostname:eureka-client1
+  serviceUrl:
+    defaultZone: http://localhost:8761/eureka/
+
+
+

@@ -1,0 +1,99 @@
+# 服务配置
+server:
+  port: 8340
+  tomcat:
+    uri-encoding: UTF-8
+  compression: 
+    enabled: true
+  servlet:    context-path: /  
+    
+# Spring相关配置
+spring:
+  #application:
+    #name: crawler-service
+  #profiles: 
+    #active: dev
+  #datasource:
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://192.168.x.y:3306/crawler_db?useUnicode=true&characterEncoding=UTF-8&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    #username: user
+    #password: pwd
+    #hikari:
+      #connection-test-query: select 1 from dual
+  messages:
+    encoding: UTF-8
+  servlet: 
+    multipart: 
+      # 最上传文件大小
+      max-file-size: 100MB
+      # 最大请求数据大小
+      max-request-size: 20MB
+  http:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
+  jpa:    hibernate:
+      ddl-auto: update      naming:        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    #properties:      #hibernate:
+        #hbm2ddl:
+          #auto: none
+        #dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true                        
+  #redis: 
+    #host: 192.168.x.y
+    #port: 6379
+    #password: pwd  
+    #timeout: 30
+    
+  # spring data
+  #data:
+    # mongodb    #mongodb:      #host: 192.168.x.y
+      #port: 27017
+      #username: user
+      #password: pwd
+      #authentication-database: crawler
+      #database: crawler
+  # sleuth 配置    
+  sleuth:    web:      client:        enabled: true
+    sampler:      probability: 1.0 # 采样比例为: 0.1(即10%),设置的值介于0.0到1.0之间，1.0则表示全部采集。          
+  # zipkin配置（有2种通信方式，http和消息中间件：rabbitmq,kafka等），spring cloud hoxton后需要配置此通信类型 ，不然会报：I/O error on POST request for "http://localhost:9411/api/v2/spans": connect timed out
+  zipkin:    sender:      type: rabbit    
+# 集成MyBatis  
+mybatis:   
+  mapperLocations: classpath*:mybatis/mapper/**/*.xml
+  typeAliasesPackage: com.efe.ms.**.model
+  #configLocation: classpath:mybatis/config/mybatis-config.xml
+  configuration-properties: 
+    # 数据库方言
+    helperDialect: mysql 
+    # RowBounds参数offset作为PageNum使用 - 默认不使用
+    offsetAsPageNum: true 
+    # RowBounds是否进行count查询 - 默认不查询
+    rowBoundsWithCount: true
+    # 当设置为true的时候，如果pagesize设置为0（或RowBounds的limit=0），就不执行分页，返回全部结果
+    pageSizeZero: false
+    # 分页合理化
+    reasonable: false
+    # 是否支持接口参数来传递分页参数，默认false
+    #supportMethodsArguments: true
+    #params: pageNum=pageNumKey;pageSize=pageSizeKey;
+
+# app 配置
+app: 
+  # 爬虫代理服务器
+  enable-proxy-pool: false
+  proxy-pools:   - host: 192.168.2.8
+    port: 80
+  - host: 192.168.10.55
+    port: 80
+
+# 日志
+logging: 
+  config: classpath:log-config/logback-${spring.profiles.active}.xml
+  
+management:  endpoints:    web:      exposure:        include: "*"        
+  
+  
+  
+  

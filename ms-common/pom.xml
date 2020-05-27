@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.efe.ms</groupId>
+  <artifactId>ms-common</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <name>ms-inventory-service</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <fastjson.version>1.2.68</fastjson.version>
+    <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+  </properties>
+  
+  <!-- 依赖父项目 -->
+  <parent>
+      <groupId>com.efe.ms</groupId>
+      <artifactId>ms-parent</artifactId>
+      <version>Hoxton.SR4</version>
+      <relativePath>../ms-parent/pom.xml</relativePath>
+  </parent>
+
+  <dependencies>
+      <!-- lombok -->
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>${lombok.version}</version>
+          <scope>provided</scope>
+      </dependency>		
+      <dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-lang3</artifactId>
+	    <version>${commons-lang3.version}</version>
+	  </dependency>
+	  <dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>fastjson</artifactId>
+	    <version>${fastjson.version}</version>
+	</dependency>
+  </dependencies>
+  
+  <!-- <build>
+  	  <plugins>
+  		  <plugin>
+		      <artifactId>maven-compiler-plugin</artifactId>
+		      <version>${maven-compiler-plugin.version}</version>
+		      <configuration>
+			      <source>${java.version}</source>
+			      <target>${java.version}</target>
+		      </configuration>
+		  </plugin>
+  	  </plugins>
+  </build> -->
+  <!-- 这种方式需要指定分配器，且必须有main函数，因为是公共的木块，被其他木块依赖，所以不需要main入口 -->
+  <!-- <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build> -->
+</project>

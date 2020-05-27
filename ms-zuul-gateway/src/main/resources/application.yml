@@ -1,0 +1,64 @@
+# 服务器配置
+server:
+  port: 8110
+  compression:
+    enabled: true
+
+spring:  http:    encoding:      charset: UTF-8
+      enabled: true
+      force: true 
+  # sleuth 配置    
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0 # 采样比例为: 0.1(即10%),设置的值介于0.0到1.0之间，1.0则表示全部采集。          
+  # zipkin配置（有2种通信方式，http和消息中间件：rabbitmq,kafka等），spring cloud hoxton后需要配置此通信类型 ，不然会报：I/O error on POST request for "http://localhost:9411/api/v2/spans": connect timed out
+  zipkin:
+    sender:
+      type: rabbit         
+    
+# zuul路由配置(也可以代码实现)
+zuul: 
+  host:
+    connect-timeout-millis: 30000  # 30秒超时
+    connection-request-timeout-millis: 30000
+    socket-timeout-millis: 30000
+  #设置为true重定向是会添加host请求头  
+  add-host-header: true
+  add-proxy-headers: true
+  #配置过滤敏感的请求头信息，设置为空就不会过滤
+  sensitive-headers:  - Cookie
+  - Set-Cookie
+  - Authorization  
+  routes: 
+    baidu-route: 
+      path: /baidu/**  
+      url: https://www.baidu.com/
+    hengzhiyi-route:
+      path: /hengzhiyi/**
+      url:  http://www.hengzhiyi.cn/
+    portal-route: 
+      path: /portal/**
+      url: http://192.168.2.109:9080/
+ribbon: 
+  ReadTimeout: 30000
+  ConnectTimeout: 30000
+  # ribbon 饥饿加载（由于赖加载各个服务实例信息，导致第一次请求耗时过长）
+  #eager-load:    #enabled: true
+    #clients:    #- auth-service          
+app:
+  # 无需认证的URL  no-auth-patterns: /login,/signin,/resources/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/**/v2/api-docs/**  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+          

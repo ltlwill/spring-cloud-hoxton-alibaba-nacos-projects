@@ -1,0 +1,53 @@
+server:
+  port: 8210
+  compression:
+    enabled: true
+spring: 
+  #jpa:
+    #hibernate:
+      #naming:
+        # 解决列名都配置正确，但是还是出现SQL Error: 1054, SQLState: 42S22 Unknown column in 'field list' error的问题
+        #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl 
+    #properties:
+      #hibernate:
+        #hbm2ddl:
+          #auto: none
+        #dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    #show-sql: true
+  # sleuth 配置    
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler: 
+      probability: 1.0 # 采样比例为: 0.1(即10%),设置的值介于0.0到1.0之间，1.0则表示全部采集。
+      # percentage: 1.0 # 采样比例为: 0.1(即10%),设置的值介于0.0到1.0之间，1.0则表示全部采集。spring boot2.0之前
+management: 
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+hystrix: 
+  command: 
+    # hystrix 默认超时配置
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+    # 指定具体类名、具体方法        
+    "MyFeignClient#sayWhyByFeign()": 
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 9000        
+feign:
+  # enabling the request or response GZIP compression for your Feign requests 
+  compression:
+    request:
+      enabled: true
+      mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml
+      min-request-size: 2048
+    response: 
+      enabled: true   
+        

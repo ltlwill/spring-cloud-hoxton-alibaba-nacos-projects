@@ -1,0 +1,6 @@
+spring:
+  rabbitmq:
+    host: 192.168.2.6
+    port: 5672
+    username: ms_client_test
+    password: test1234

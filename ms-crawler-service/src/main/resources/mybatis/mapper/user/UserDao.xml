@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.efe.ms.crawlerservice.dao.UserDao">
+
+	<resultMap id="UserMap" type="User">
+	    <id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="name" property="name" jdbcType="VARCHAR" />	
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />	
+		<result column="password" property="password" jdbcType="VARCHAR" />	
+		<result column="phone_no" property="phoneNo" jdbcType="VARCHAR" />	
+	</resultMap>
+
+	<sql id="baseColumns">
+		id,name,nick_name,password,phone_no
+	</sql>
+	<sql id="insertColumns">
+		name,nick_name,password,phone_no
+	</sql>
+	
+	<sql id="defaultOrderSql">
+		ORDER BY id DESC
+	</sql>
+	
+	<!-- 公共查询语句 -->
+	<sql id="querycommonSql">
+		SELECT <include refid="baseColumns"/> FROM t_user
+		<include refid="queryConditionSql" />
+	</sql>
+	
+	<!-- 获取数据 -->
+	<select id="getListByEntity" parameterType="User"
+		resultMap="UserMap">
+		<include refid="querycommonSql"/>
+		<include refid="defaultOrderSql"/>
+	</select>
+	
+	<!-- 分页获取数据 -->
+	<select id="getListPage" parameterType="User" 
+		resultMap="UserMap">
+		<include refid="querycommonSql"/>
+		<include refid="defaultOrderSql"/>
+	</select>
+	
+	<select id="count" parameterType="User" resultType="Long">
+		SELECT COUNT(1) FROM (<include refid="querycommonSql"/>)
+	</select>
+	
+	<!-- 查询条件语句 -->
+	<sql id="queryConditionSql">
+		<where>
+			
+			<if test="keyword != null and keyword != ''">
+				AND (
+					name LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					nickName LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+				)
+			</if>
+			
+			<if test="id != null">
+				AND id = #{id,jdbcType=BIGINT}
+			</if>
+			<if test="name != '' and name != null">
+				AND name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="nickName != '' and nickName != null">
+				AND nick_Name = #{nickName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 保存 -->
+	<insert id="add" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_user(
+			<include refid="insertColumns"/>
+		)
+		VALUES(
+			#{name,jdbcType=VARCHAR},
+			#{nickName,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR},
+			#{phoneNo,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 批量删除 -->
+	<select id="getByIds" parameterType="java.util.List" resultMap="UserMap">
+		SELECT <include refid="baseColumns"/> FROM t_user
+		<where>
+			<if test="list != null and list.size() > 0">
+				id IN
+				<foreach item="id" collection="list" open="(" close=")" separator=",">
+					#{id,jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="list == null or list.size() == 0">
+				1 = 2
+			</if>
+		</where>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteByIds" parameterType="java.util.List">
+		DELETE FROM t_user
+		<where>
+			<if test="list != null and list.size() > 0">
+				id IN
+				<foreach item="id" collection="list" open="(" close=")" separator=",">
+					#{id,jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="list == null or list.size() == 0">
+				1 = 2
+			</if>
+		</where>
+	</delete>
+</mapper>
+
+
+
+
+

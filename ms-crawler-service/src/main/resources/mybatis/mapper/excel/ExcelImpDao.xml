@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.efe.ms.bankservice.dao.ExcelImpDao">
+
+	<resultMap id="ExcelImpMap" type="ExcelImp">
+	    <id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="file_name" property="fileName" jdbcType="VARCHAR" />	
+		<result column="file_lower_name" property="fileLowerName" jdbcType="VARCHAR" />	
+		<result column="file_ext" property="fileExt" jdbcType="VARCHAR" />	
+		<result column="abs_path" property="absPath" jdbcType="VARCHAR" />	
+		<result column="status" property="status" jdbcType="INTEGER" />	
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />	
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />	
+		<result column="import_time" property="importTime" jdbcType="TIMESTAMP" />	
+	</resultMap>
+
+	<sql id="base_columns">
+		id,file_name,file_lower_name,file_ext,abs_path,status,user_id,user_name,import_time
+	</sql>
+	<sql id="insert_columns">
+		file_name,file_lower_name,file_ext,abs_path,status,user_id,user_name,import_time
+	</sql>
+	
+	<sql id="defaultOrderSql">
+		ORDER BY id DESC
+	</sql>
+	
+	<!-- 公共查询语句 -->
+	<sql id="querycommonSql">
+		SELECT <include refid="base_columns"/> FROM t_excel_imp
+		<include refid="queryConditionSql" />
+	</sql>
+	
+	<!-- 获取数据 -->
+	<select id="getListByEntity" parameterType="ExcelImp"
+		resultMap="ExcelImpMap">
+		<include refid="querycommonSql"/>
+		<include refid="defaultOrderSql"/>
+	</select>
+	
+	<!-- 分页获取数据 -->
+	<select id="getListPage" parameterType="ExcelImp" 
+		resultMap="ExcelImpMap">
+		<include refid="querycommonSql"/>
+		<include refid="defaultOrderSql"/>
+	</select>
+	
+	<select id="count" parameterType="ExcelImp" resultType="Long">
+		SELECT COUNT(1) FROM (<include refid="querycommonSql"/>)
+	</select>
+	
+	<!-- 查询条件语句 -->
+	<sql id="queryConditionSql">
+		<where>
+			
+			<if test="keyword != null and keyword != ''">
+				AND (
+					id LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					file_lower_name LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					file_name LIKE CONCAT(CONCAT('%', #{keyword}),'%') 
+				    or 
+					user_name LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+				)
+			</if>
+			
+			<if test="id != null">
+				AND id = #{id,jdbcType=BIGINT}
+			</if>
+			<if test="fileName != '' and fileName != null">
+				AND file_name = #{fileName,jdbcType=VARCHAR}
+			</if>
+			<if test="fileLowerName != '' and fileLowerName != null">
+				AND file_lower_name = #{fileLowerName,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != '' and userId != null">
+				AND user_id = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="userName != '' and userName != null">
+				AND user_name = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				AND status = #{status,jdbcType=INTEGER}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 保存 -->
+	<insert id="add" parameterType="ExcelImp" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_excel_imp(
+			<include refid="insert_columns"/>
+		)
+		VALUES(
+			#{fileName,jdbcType=VARCHAR},
+			#{fileLowerName,jdbcType=VARCHAR},
+			#{fileExt,jdbcType=VARCHAR},
+			#{absPath,jdbcType=VARCHAR},
+			#{status,jdbcType=INTEGER},
+			#{userId,jdbcType=VARCHAR},
+			#{userName,jdbcType=VARCHAR},
+			#{importTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<!-- 批量删除 -->
+	<select id="getByIds" parameterType="java.util.List" resultMap="ExcelImpMap">
+		SELECT <include refid="base_columns"/> FROM t_excel_imp
+		<where>
+			<if test="list != null and list.size() > 0">
+				id IN
+				<foreach item="id" collection="list" open="(" close=")" separator=",">
+					#{id,jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="list == null or list.size() == 0">
+				1 = 2
+			</if>
+		</where>
+	</select>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteByIds" parameterType="java.util.List">
+		DELETE FROM t_excel_imp
+		<where>
+			<if test="list != null and list.size() > 0">
+				id IN
+				<foreach item="id" collection="list" open="(" close=")" separator=",">
+					#{id,jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="list == null or list.size() == 0">
+				1 = 2
+			</if>
+		</where>
+	</delete>
+</mapper>
+
+
+
+
+

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.efe.ms.bankservice.dao.ExcelImpDetailDao">
+
+	<resultMap id="ExcelImpDetailMap" type="ExcelImpDetail">
+	    <id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="imp_id" property="impId" jdbcType="BIGINT" />	
+		<result column="account_name" property="accountName" jdbcType="VARCHAR" />	
+		<result column="account_no" property="accountNo" jdbcType="VARCHAR" />	
+		<result column="bank_name" property="bankName" jdbcType="VARCHAR" />	
+		<result column="bank_no" property="bankNo" jdbcType="VARCHAR" />	
+		<result column="transaction_date" property="transactionDate" jdbcType="VARCHAR" />	
+		<result column="transaction_time" property="transactionTime" jdbcType="VARCHAR" />	
+		<result column="income" property="income" jdbcType="DOUBLE" />	
+		<result column="expend" property="expend" jdbcType="DOUBLE" />	
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />	
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />	
+		<result column="import_time" property="importTime" jdbcType="TIMESTAMP" />
+		
+		<result column="file_name" property="fileName" jdbcType="VARCHAR" />	
+		<result column="file_lower_name" property="fileLowerName" jdbcType="VARCHAR" />	
+		<result column="balance" property="balance" jdbcType="DOUBLE" />	
+		<result column="to_account_name" property="toAccountName" jdbcType="VARCHAR" />	
+		<result column="to_account_no" property="toAccountNo" jdbcType="VARCHAR" />	
+		<result column="to_bank_name" property="toBankName" jdbcType="VARCHAR" />	
+		<result column="summary" property="summary" jdbcType="VARCHAR" />	
+		<result column="ip" property="ip" jdbcType="VARCHAR" />	
+	</resultMap>
+
+	<sql id="base_columns">
+		id,imp_id,account_name,account_no,bank_name,bank_no,transaction_date,transaction_time,
+		income,expend,user_id,user_name,import_time,file_name,file_lower_name,balance,to_account_name,to_account_no,
+		to_bank_name,summary,ip
+	</sql>
+	<sql id="insert_columns">
+		imp_id,account_name,account_no,bank_name,bank_no,transaction_date,transaction_time,
+		income,expend,user_id,user_name,import_time,file_name,file_lower_name,balance,to_account_name,to_account_no,
+		to_bank_name,summary,ip
+	</sql>
+	
+	<sql id="defaultOrderSql">
+		ORDER BY imp_id DESC,id ASC
+	</sql>
+	
+	<!-- 公共查询语句 -->
+	<sql id="querycommonSql">
+		SELECT <include refid="base_columns"/> FROM t_excel_imp_detail
+		<include refid="queryConditionSql" />
+	</sql>
+	
+	<!-- 获取数据 -->
+	<select id="getListByEntity" parameterType="ExcelImpDetail"
+		resultMap="ExcelImpDetailMap">
+		<include refid="querycommonSql"/>
+		<include refid="defaultOrderSql"/>
+	</select>
+	
+	<!-- 分页获取数据 -->
+	<select id="getListPage" parameterType="ExcelImpDetail" 
+		resultMap="ExcelImpDetailMap">
+		<include refid="querycommonSql"/>
+		<include refid="defaultOrderSql"/>
+	</select>
+	
+	<select id="count" parameterType="ExcelImpDetail" resultType="Long">
+		SELECT COUNT(1) FROM (<include refid="querycommonSql"/>)
+	</select>
+	
+	<!-- 查询条件语句 -->
+	<sql id="queryConditionSql">
+		<where>
+			<if test="(keywordType == null or keywordType == '') and keyword != null and keyword != ''">
+				AND (
+					imp_id LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					account_name LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					account_no LIKE CONCAT(CONCAT('%', #{keyword}),'%') 
+				    or 
+					bank_name LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+				    or 
+					bank_no LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+				    or 
+					CONCAT(income,'') LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+				    or 
+					CONCAT(expend,'') LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+				    or 
+					file_lower_name LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					CONCAT(balance,'') LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					to_account_name LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					to_account_no LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					to_bank_name LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					summary LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+					or 
+					ip LIKE CONCAT(CONCAT('%', #{keyword}),'%')
+				)
+			</if>
+			
+			<if test="id != null">
+				AND id = #{id,jdbcType=BIGINT}
+			</if>
+			<if test="impId != null">
+				AND imp_id = #{impId,jdbcType=BIGINT}
+			</if>
+			<if test="accountName != '' and accountName != null">
+				AND (account_name = #{accountName,jdbcType=VARCHAR} or account_name LIKE CONCAT(CONCAT('%', #{accountName}),'%'))
+			</if>
+			<if test="accountNo != '' and accountNo != null">
+				AND (account_no = #{accountNo,jdbcType=VARCHAR} or account_no LIKE CONCAT(CONCAT('%', #{accountNo}),'%'))
+			</if>
+			<if test="bankName != '' and bankName != null">
+				AND (bank_name = #{bankName,jdbcType=VARCHAR} or bank_name LIKE CONCAT(CONCAT('%', #{bankName}),'%'))
+			</if>
+			<if test="bankNo != '' and bankNo != null">
+				AND (bank_no = #{bankNo,jdbcType=VARCHAR} or bank_no LIKE CONCAT(CONCAT('%', #{bankNo}),'%'))
+			</if>
+			<if test="transactionDate != '' and transactionDate != null">
+				AND (transaction_Date = #{transactionDate,jdbcType=VARCHAR} or transaction_Date LIKE CONCAT(CONCAT('%', #{transactionDate}),'%'))
+			</if>
+			<if test="transactionTime != '' and transactionTime != null">
+				AND (transaction_Time = #{transactionTime,jdbcType=VARCHAR} or transaction_Time LIKE CONCAT(CONCAT('%', #{transactionTime}),'%'))
+			</if>
+			<if test="income != '' and income != null">
+				AND income = #{income,jdbcType=DOUBLE}
+			</if>
+			<if test="expend != '' and expend != null">
+				AND expend = #{income,jdbcType=DOUBLE}
+			</if>
+			<if test="userId != null">
+				AND user_id = #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="fileLowerName != null and fileLowerName !=''">
+				AND (file_lower_name = #{fileLowerName,jdbcType=VARCHAR} or file_lower_name LIKE CONCAT(CONCAT('%', #{fileLowerName}),'%'))
+			</if>
+			<if test="fileName != null and fileName !=''">
+				AND (file_name = #{fileLowerName,jdbcType=VARCHAR} or file_name LIKE CONCAT(CONCAT('%', #{fileName}),'%'))
+			</if>
+			<if test="balance != null">
+				AND (balance = #{balance,jdbcType=DOUBLE} or balance LIKE CONCAT(CONCAT('%', #{balance}),'%'))
+			</if>
+			<if test="toAccountName != null and toAccountName !=''">
+				AND (to_account_name = #{toAccountName,jdbcType=VARCHAR} or to_account_name LIKE CONCAT(CONCAT('%', #{toAccountName}),'%'))
+			</if>
+			<if test="toAccountNo != null and toAccountNo !=''">
+				AND (to_account_no = #{toAccountNo,jdbcType=VARCHAR} or to_account_no LIKE CONCAT(CONCAT('%', #{toAccountNo}),'%'))
+			</if>
+			<if test="toBankName != null and toBankName !=''">
+				AND (to_bank_name = #{toBankName,jdbcType=VARCHAR} or to_bank_name LIKE CONCAT(CONCAT('%', #{toBankName}),'%'))
+			</if>
+			<if test="summary != null and summary !=''">
+				AND (summary = #{summary,jdbcType=VARCHAR} or summary LIKE CONCAT(CONCAT('%', #{summary}),'%'))
+			</if>
+			<if test="ip != null and ip !=''">
+				AND (ip = #{ip,jdbcType=VARCHAR} or ip LIKE CONCAT(CONCAT('%', #{ip}),'%'))
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 保存 -->
+	<insert id="add" parameterType="ExcelImpDetail" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_excel_imp_detail(
+			<include refid="insert_columns"/>
+		)
+		VALUES(
+			#{impId,jdbcType=BIGINT},
+			#{accountName,jdbcType=VARCHAR},
+			#{accountNo,jdbcType=VARCHAR},
+			#{bankName,jdbcType=VARCHAR},
+			#{bankNo,jdbcType=VARCHAR},
+			#{transactionDate,jdbcType=VARCHAR},
+			#{transactionTime,jdbcType=VARCHAR},
+			#{income,jdbcType=DOUBLE},
+			#{expend,jdbcType=DOUBLE},
+			#{userId,jdbcType=VARCHAR},
+			#{userName,jdbcType=VARCHAR},
+			#{importTime,jdbcType=TIMESTAMP},
+			#{fileName,jdbcType=VARCHAR},
+			#{fileLowerName,jdbcType=VARCHAR},
+			#{balance,jdbcType=DOUBLE},
+			#{toAccountName,jdbcType=VARCHAR},
+			#{toAccountNo,jdbcType=VARCHAR},
+			#{toBankName,jdbcType=VARCHAR},
+			#{summary,jdbcType=VARCHAR},
+			#{ip,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteByImpIds" parameterType="java.util.List">
+		DELETE FROM t_excel_imp_detail
+		<where>
+			<if test="list != null and list.size() > 0">
+				imp_id IN
+				<foreach item="impId" collection="list" open="(" close=")" separator=",">
+					#{impId,jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="list == null or list.size() == 0">
+				1 = 2
+			</if>
+		</where>
+	</delete>
+	
+	<!-- 批量删除 -->
+	<delete id="deleteByIds" parameterType="java.util.List">
+		DELETE FROM t_excel_imp_detail
+		<where>
+			<if test="list != null and list.size() > 0">
+				id IN
+				<foreach item="id" collection="list" open="(" close=")" separator=",">
+					#{id,jdbcType=BIGINT}
+				</foreach>
+			</if>
+			<if test="list == null or list.size() == 0">
+				1 = 2
+			</if>
+		</where>
+	</delete>
+</mapper>
+
+
+
+
+

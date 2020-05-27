@@ -1,0 +1,70 @@
+产品数据结构：
+	{
+	    id: string(数据库自动生成),
+		productId: string(产品ID),
+		productName: string(产品名称),
+		productLinkUrl: string(产品详情地址),
+		productImageUrl: string(主图地址),
+		price：decimal(价格),
+		currency: string(货币),
+		unit：string(购买单位),
+		priceUnit: string(价格单位),
+		beginAmount: Integer(起拍数量),
+		beginPrice: decimal(起拍价格),	
+		keywords: string(关键词),
+		cateId: string(类目ID),
+		cateName: string(类目名称),
+		taskNo: string(任务ID，由时间戳构成),
+		createTime: date(创建时间),
+		status: number(状态，0：无效，1：有效),
+		seller: { 
+			sellerId: string(卖家ID),
+			sellerName: string(卖家名称),
+			memberId: string(),
+			companySiteLink: string(商家链接地址),
+			businessModel: string(经营模式),
+			location: string(所在地区),
+			
+		},
+		sku: {}, // Object: iDetailData 变量的sku节点值
+		details:{ // Object详细信息 
+			attributes:[ // Array 
+				{
+					name: "建议零售价",
+					value: 80,
+				},
+				{
+				    name: "货源类别",
+					value: "现货"
+				},
+				...
+			],
+			description: string(html描述信息,$('#desc-lazyload-container').html()),
+			descriptionUrl: string(获取描述的请求地址)
+		},
+		galleryImages: [
+			{
+				previewUrl: string(预览图地址),
+				originalUrl: string(原始图地址),
+				smallUrl: string(小图地址),
+				detailUrl: string(细节图地址)
+			}
+		]
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
