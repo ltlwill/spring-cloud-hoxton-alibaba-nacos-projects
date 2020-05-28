@@ -47,9 +47,12 @@ ribbon:
   ConnectTimeout: 30000
   # ribbon 饥饿加载（由于赖加载各个服务实例信息，导致第一次请求耗时过长）
   #eager-load:    #enabled: true
-    #clients:    #- auth-service          
+    #clients:    #- auth-service      
+# 日志
+logging: 
+  config: classpath:log-config/logback-${spring.profiles.active}.xml        
 app:
-  # 无需认证的URL  no-auth-patterns: /login,/signin,/resources/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/**/v2/api-docs/**  
+  # 无需认证的URL  no-auth-patterns: /actuator/**,/login,/signin,/resources/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/**/v2/api-docs/**  
   
   
   

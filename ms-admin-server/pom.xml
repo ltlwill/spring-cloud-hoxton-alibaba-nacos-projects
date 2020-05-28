@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.efe.ms</groupId>
+  <artifactId>ms-admin-server</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <name>ms-admin-server</name>
+  <url>http://maven.apache.org</url>
+  
+  <!-- parent pom -->
+  <parent>
+      <groupId>com.efe.ms</groupId>
+      <artifactId>ms-parent</artifactId>
+      <version>Hoxton.SR4</version>
+      <relativePath>../ms-parent/pom.xml</relativePath>
+  </parent>
+  
+  <properties>
+        <spring-boot-admin.version>2.2.3</spring-boot-admin.version>
+  </properties>
+  
+  
+  <dependencies>
+      <!-- spring boot admin server -->
+      <dependency>
+          <groupId>de.codecentric</groupId>
+          <artifactId>spring-boot-admin-starter-server</artifactId>
+          <version>${spring-boot-admin.version}</version>
+      </dependency>  
+  </dependencies>
+  
+    <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -27,6 +27,7 @@ management:
     web:
       exposure:
         include: "*"
+  health:    db:      enabled: false   # 此项目没有数据源，需要关闭，否则健康检查时会报错，导致认为应用是无效的：o.s.b.a.jdbc.DataSourceHealthIndicator   : DataSource health check failed   
 hystrix: 
   command: 
     # hystrix 默认超时配置
@@ -50,4 +51,7 @@ feign:
       min-request-size: 2048
     response: 
       enabled: true   
-        
+# 日志
+logging: 
+  config: classpath:log-config/logback-${spring.profiles.active}.xml
+          

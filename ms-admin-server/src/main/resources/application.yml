@@ -1,0 +1,17 @@
+# 服务器配置
+server:
+  port: 8130
+
+spring:
+  security:
+    user:
+    # ui login user name 
+      name: admin
+    # ui login user password
+      password: admin@1234
+  boot:    admin:      discovery:        ignored-services:        - ${spring.application.name}
+  sleuth:    enabled: false # 此服务不启用 sleuth 收集链路信息
+    web:
+      client:
+        enabled: true
+  zipkin:    enabled: false # 此服务不启用 zipkin 处理 sleuth 收集的信息

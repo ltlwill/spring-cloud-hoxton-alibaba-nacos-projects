@@ -18,10 +18,12 @@
     </parent>
     
     <!-- 如果不配置 modules,则在父pom中执行打包时，不会有项目触发打包操作 -->
-    <!-- <modules>
+    <!-- 
+    <modules>
     	<module>../ms-common</module>
     	<module>../ms-product-service</module>
-    </modules> -->
+    </modules> 
+    -->
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

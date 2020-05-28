@@ -71,8 +71,8 @@ management:
   #endpoint:
     #health:
       #show-details: always 
-# 日志配置
-logging:
-  config: classpath:logback-${spring.profiles.active}.xml
+# 日志
+logging: 
+  config: classpath:log-config/logback-${spring.profiles.active}.xml
   
 

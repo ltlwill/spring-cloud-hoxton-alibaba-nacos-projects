@@ -18,6 +18,7 @@
       <groupId>com.efe.ms</groupId>
       <artifactId>ms-parent</artifactId>
       <version>Hoxton.SR4</version>
+      <relativePath>../ms-parent/pom.xml</relativePath>
   </parent>
 
   <dependencies>
