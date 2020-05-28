@@ -1,6 +1,7 @@
 package com.efe.ms.common.filter;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -26,8 +27,7 @@ import com.efe.ms.common.util.UserInfoTransferUtil;
  *
  */
 public class WebGlobalFilter implements Filter {
-	private final static Logger logger = LoggerFactory
-			.getLogger(WebGlobalFilter.class);
+	private final static Logger logger = LoggerFactory.getLogger(WebGlobalFilter.class);
 
 	@Override
 	public void destroy() {
@@ -35,30 +35,31 @@ public class WebGlobalFilter implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 		logger.debug("自定义filter doFilter...");
-		setTransferUserInfo((HttpServletRequest)request);
+		setTransferUserInfo((HttpServletRequest) request);
 		chain.doFilter(request, response);
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 	}
-	
-	private void setTransferUserInfo(ServletRequest request){
-		logger.info("---WebGlobalFilter.setTransferUserInfo---");
-		try{
-			HttpServletRequest httpRequest = (HttpServletRequest)request;
+
+	private void setTransferUserInfo(ServletRequest request) {
+//		logger.info("---WebGlobalFilter.setTransferUserInfo---");
+		try {
+			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			String userInfoStr = httpRequest.getHeader(Constants.Headers.LOGIN_USER_INFO);
-			if(StringUtils.isNotBlank(userInfoStr)){
-				UserInfoDTO userInfo = JSON.parseObject(userInfoStr, UserInfoDTO.class);
+			if (StringUtils.isNotBlank(userInfoStr)) {
+				UserInfoDTO userInfo = JSON.parseObject(URLDecoder.decode(userInfoStr, Constants.DEFAULT_CHARSET), 
+						UserInfoDTO.class);
 				UserInfoTransferUtil.setUserInfo(userInfo);
 			}
-		}catch(Exception e){
-			logger.error("WebGlobalFilter 设置传递user信息失败",e); 
+		} catch (Exception e) {
+			logger.error("WebGlobalFilter 设置传递user信息失败", e);
 		}
-		
+
 	}
 
 }

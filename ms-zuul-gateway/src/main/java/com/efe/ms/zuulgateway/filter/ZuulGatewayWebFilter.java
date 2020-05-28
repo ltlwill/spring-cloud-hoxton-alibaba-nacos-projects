@@ -67,7 +67,7 @@ public class ZuulGatewayWebFilter implements Filter {
 			res.getWriter().write(JSON.toJSONString(BusinessResult.fail("Invalid access token")));
 			return;
 		}
-		setTransferUserInfo(userStr);
+		setTransferUserInfo(userStr,accessToken);
 		chain.doFilter(req, res);
 	}
 
@@ -75,13 +75,12 @@ public class ZuulGatewayWebFilter implements Filter {
 	public void init(FilterConfig arg0) throws ServletException {
 	}
 	
-	private void setTransferUserInfo(String userStr){
+	private void setTransferUserInfo(String userStr,String accessToken){
 		logger.info("---ZuulGatewayWebFilter.setTransferUserInfo---");
 		try{
-//			UserInfo user = new UserInfo();
-//			user.setId("10001");
-//			user.setName("test");
-			UserInfoTransferUtil.setUserInfo(JSONObject.parseObject(userStr, UserInfoDTO.class));
+			UserInfoDTO userInfo = JSONObject.parseObject(userStr, UserInfoDTO.class);
+			userInfo.setAccessToken(accessToken);
+			UserInfoTransferUtil.setUserInfo(userInfo);
 		}catch(Exception e){
 			logger.error("ZuulGatewayWebFilter 设置传递user信息失败",e); 
 		}

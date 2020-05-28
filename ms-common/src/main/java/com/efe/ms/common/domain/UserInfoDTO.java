@@ -23,5 +23,7 @@ public class UserInfoDTO extends BusinessEntity{
 	private Integer age;
 	
 	private String password;
+	
+	private String accessToken;
 
 }
