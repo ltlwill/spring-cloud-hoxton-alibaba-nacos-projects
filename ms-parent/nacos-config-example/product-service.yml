@@ -1,0 +1,9 @@
+# 注：在windows平台，如果nacos配置中有中文，使用cmd命令行启动时，会导致解析失败，因为编码的问题，应用启动命令需要添加参数：-Dfile.encoding=utf-8，此参数要在 -jar的前面，如：java -Dfile.encoding=utf-8 -jar xxx.jar --server.port=8311
+spring:
+  datasource: 
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.x.y:3306/product_db?useUnicode=true&characterEncoding=UTF-8&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&zeroDateTimeBehavior=convertToNull
+    username: user
+    password: pwd
+    hikari:
+      connection-test-query: select 1 from dual

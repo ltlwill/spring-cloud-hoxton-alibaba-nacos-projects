@@ -11,6 +11,7 @@ spring:
     name: product-service
   profiles:
     active: dev
+  main:    allow-bean-definition-overriding: true
   # alibaba nacos
   cloud: 
     nacos: 

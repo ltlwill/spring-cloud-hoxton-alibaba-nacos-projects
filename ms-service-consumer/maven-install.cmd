@@ -1,0 +1,1 @@
+mvn clean install --settings E:\softWare\apache-maven-3.6.2\conf\settings-aliyun.xml

@@ -3,8 +3,6 @@ server:
   port: 8310
   compression:
     enabled: true
-  servlet: 
-    context-path: /
 
 # eureka客户端（即服务提供者）,集群
 spring:
