@@ -33,6 +33,7 @@ zuul:
   sensitive-headers:  - Cookie
   - Set-Cookie
   - Authorization  
+       # 支持动态刷新路由信息，详见：com.efe.ms.zuulgateway.config.ZuuDynamicRoutesConfig
   routes: 
     baidu-route: 
       path: /baidu/**  
