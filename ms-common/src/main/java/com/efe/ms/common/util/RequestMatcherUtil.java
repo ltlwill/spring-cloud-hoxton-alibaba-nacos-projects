@@ -24,6 +24,9 @@ public class RequestMatcherUtil {
 			return false;
 		}
 		String url = request.getServletPath();
+		if(url == null || "".equals(url.trim()) || "/".equals(url.trim())) {
+			return true;
+		}
 		int len = matchers.size();
 		for (int i = 0; i < len; i++) {
 			if(patterns.get(i).equals(url) || matchers.get(i).matches(request)) {

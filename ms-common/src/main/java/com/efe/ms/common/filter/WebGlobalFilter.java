@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.efe.ms.common.constant.Constants;
 import com.efe.ms.common.domain.UserInfoDTO;
-import com.efe.ms.common.util.UserInfoTransferUtil;
+import com.efe.ms.common.util.WebRequestContextHolder;
 
 /**
  * 全局web过滤器，每次请求都设置传递当前的用户信息
@@ -54,7 +54,7 @@ public class WebGlobalFilter implements Filter {
 			if (StringUtils.isNotBlank(userInfoStr)) {
 				UserInfoDTO userInfo = JSON.parseObject(URLDecoder.decode(userInfoStr, Constants.DEFAULT_CHARSET), 
 						UserInfoDTO.class);
-				UserInfoTransferUtil.setUserInfo(userInfo);
+				WebRequestContextHolder.setUserInfo(userInfo);
 			}
 		} catch (Exception e) {
 			logger.error("WebGlobalFilter 设置传递user信息失败", e);

@@ -58,6 +58,10 @@ feign:
     response: 
       enabled: true  
       useGzipDecoder: true # feign客户端会报出 Illegal character ((CTRL-CHAR, code 31)): only regular white space 的错误，因为默认不支持gzip数据解析
+ 
+# 是否开启 swagger 文档功能  (true:开启,false:不开启,参见Swagger2类的：@ConditionalOnProperty(prefix = "swagger2", name = { "enabled" }, havingValue = "true"))
+swagger2:
+  enabled: false      
           
 # tx-lcn distributed transaction client config  
 tx-lcn: 

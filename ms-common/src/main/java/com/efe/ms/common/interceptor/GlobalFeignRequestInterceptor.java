@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.efe.ms.common.constant.Constants;
 import com.efe.ms.common.domain.UserInfoDTO;
-import com.efe.ms.common.util.UserInfoTransferUtil;
+import com.efe.ms.common.util.WebRequestContextHolder;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -29,7 +29,7 @@ public class GlobalFeignRequestInterceptor implements RequestInterceptor {
 	private void setTransferUserInfo(RequestTemplate template) {
 		logger.info("---FeignRequestInterceptor.setTransferUserInfo---");
 		try {
-			UserInfoDTO userInfo = UserInfoTransferUtil.getUserInfo();
+			UserInfoDTO userInfo = WebRequestContextHolder.getUserInfo();
 			if (userInfo != null) {
 				template.header(Constants.Headers.LOGIN_USER_INFO,
 						JSON.toJSONString(userInfo));

@@ -23,7 +23,7 @@ import com.efe.ms.common.constant.Constants;
 import com.efe.ms.common.domain.BusinessResult;
 import com.efe.ms.common.domain.UserInfoDTO;
 import com.efe.ms.common.util.RequestMatcherUtil;
-import com.efe.ms.common.util.UserInfoTransferUtil;
+import com.efe.ms.common.util.WebRequestContextHolder;
 import com.efe.ms.zuulgateway.utils.RedisOperateUtil;
 
 import io.lettuce.core.RedisConnectionException;
@@ -80,7 +80,7 @@ public class ZuulGatewayWebFilter implements Filter {
 		try{
 			UserInfoDTO userInfo = JSONObject.parseObject(userStr, UserInfoDTO.class);
 			userInfo.setAccessToken(accessToken);
-			UserInfoTransferUtil.setUserInfo(userInfo);
+			WebRequestContextHolder.setUserInfo(userInfo);
 		}catch(Exception e){
 			logger.error("ZuulGatewayWebFilter 设置传递user信息失败",e); 
 		}

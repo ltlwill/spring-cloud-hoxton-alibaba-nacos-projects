@@ -25,10 +25,11 @@ zuul:
     connect-timeout-millis: 30000  # 30秒超时
     connection-request-timeout-millis: 30000
     socket-timeout-millis: 30000
-  #设置为true重定向是会添加host请求头  
+    
+       #设置为true重定向是会添加host请求头  
   add-host-header: true
   add-proxy-headers: true
-  #配置过滤敏感的请求头信息，设置为空就不会过滤
+      #配置过滤敏感的请求头信息，设置为空就不会过滤
   sensitive-headers:  - Cookie
   - Set-Cookie
   - Authorization  
@@ -42,6 +43,7 @@ zuul:
     portal-route: 
       path: /portal/**
       url: http://192.168.2.109:9080/
+      
 ribbon: 
   ReadTimeout: 30000
   ConnectTimeout: 30000
@@ -52,7 +54,10 @@ ribbon:
 logging: 
   config: classpath:log-config/logback-${spring.profiles.active}.xml        
 app:
-  # 无需认证的URL  no-auth-patterns: /actuator/**,/login,/signin,/resources/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/**/v2/api-docs/**  
+  # 无需认证的URL  no-auth-patterns: /actuator/**,/login,/signin,/resources/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/**/v2/api-docs/**
+# 开启 swagger 文档功能  
+swagger2:
+  enabled: true  
   
   
   

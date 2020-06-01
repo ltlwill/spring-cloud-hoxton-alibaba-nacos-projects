@@ -3,6 +3,9 @@ package com.efe.ms.serviceconsumer;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -10,9 +13,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.paths.RelativePathProvider;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -53,7 +59,8 @@ public class Swagger2 {
 				.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
 				.apis(RequestHandlerSelectors
 						.withMethodAnnotation(ApiOperation.class))
-				.paths(PathSelectors.any()).build();
+				.paths(PathSelectors.any()).build()
+				.globalOperationParameters(parameters());
 	}
 
 	/**
@@ -71,5 +78,12 @@ public class Swagger2 {
 		return new ApiInfoBuilder().title("服务消费者").description("服务消费者文档")
 		// .termsOfServiceUrl("http://www.hengzhiyi.cn")
 				.contact("liutl@iefiel.com").version("1.0").build();
+	}
+	
+	private List<Parameter> parameters() {
+		List<Parameter> params = new ArrayList<Parameter>();
+		params.add(new ParameterBuilder().name("access-token").description("请求令牌").modelRef(new ModelRef("string"))
+				.parameterType("string").required(true).build());
+		return params;
 	}
 }

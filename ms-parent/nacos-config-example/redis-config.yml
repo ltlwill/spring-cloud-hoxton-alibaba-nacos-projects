@@ -4,4 +4,4 @@ spring:
     host: 192.168.x.y
       port: 6379
       password: pwd 
-      timeout: 30
+      timeout: 5000

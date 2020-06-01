@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.efe.ms.common.domain.UserInfoDTO;
-import com.efe.ms.common.util.UserInfoTransferUtil;
+import com.efe.ms.common.util.WebRequestContextHolder;
 import com.efe.ms.productservice.domain.Combo;
 import com.efe.ms.productservice.domain.Product;
 import com.efe.ms.productservice.service.ProductService;
@@ -52,7 +52,7 @@ public class ProductController extends BaseController {
 	@ApiOperation(value = "根据SKU获取产品信息")
 	@GetMapping("/{sku}")
 	public Product getProductBySku(@PathVariable String sku) {
-		UserInfoDTO user = UserInfoTransferUtil.getUserInfo();
+		UserInfoDTO user = WebRequestContextHolder.getUserInfo();
 		System.out.println("--user--:" + (user == null ? null : JSON.toJSONString(user)));
 		return productService.getProductBySku(sku);
 	}

@@ -16,9 +16,12 @@ public class IndexController {
 	@Value("${common.test:}")
 	private String commonConfig;
 	
+	@Value("${app.welcome: welcome to crawler service}")
+	private String welcomeStr;
+	
 	@GetMapping
 	public String index(){
-		return "welcom to crawler service";
+		return welcomeStr;
 	}
 	
 	@GetMapping("/redis")

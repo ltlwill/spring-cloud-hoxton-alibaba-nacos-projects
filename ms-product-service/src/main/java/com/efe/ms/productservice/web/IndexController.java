@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RefreshScope
 @RestController
-@RequestMapping("/index")
+@RequestMapping
 public class IndexController extends BaseController {
 	
 	@Value("${server.port:}")
@@ -16,6 +16,14 @@ public class IndexController extends BaseController {
 	
 	@Value("${common.test:}")
 	private String configStr;
+	
+	@Value("${app.welcome: welcome to product service}")
+	private String welcomeStr;
+	
+	@RequestMapping
+	public String index() {
+		return welcomeStr;
+	}
 	
 	@RequestMapping("/server/port")
 	public String serverPort(){
