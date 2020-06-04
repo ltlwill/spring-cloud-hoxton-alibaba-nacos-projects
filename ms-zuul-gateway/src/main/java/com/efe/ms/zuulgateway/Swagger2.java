@@ -33,7 +33,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 // 用于控制是否开启swagger API文档
-@ConditionalOnProperty(prefix = "swagger2", name = { "enabled" }, havingValue = "true")
+@ConditionalOnProperty(prefix = "app", name = { "swagger2-enabled" }, havingValue = "true")
 public class Swagger2 {
 
 	@Value("${spring.application.name}")

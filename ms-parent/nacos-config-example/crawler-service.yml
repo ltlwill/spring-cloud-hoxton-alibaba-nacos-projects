@@ -18,3 +18,7 @@ spring:
       password: pwd
       authentication-database: crawler
       database: crawler     
+# 应用自定义配置      
+app:
+  # 无需认证的URL
+  no-auth-patterns: /actuator/**,/login,/signin,/resources/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/**/v2/api-docs/**      

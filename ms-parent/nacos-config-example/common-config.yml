@@ -58,10 +58,16 @@ feign:
     response: 
       enabled: true  
       useGzipDecoder: true # feign客户端会报出 Illegal character ((CTRL-CHAR, code 31)): only regular white space 的错误，因为默认不支持gzip数据解析
- 
-# 是否开启 swagger 文档功能  (true:开启,false:不开启,参见Swagger2类的：@ConditionalOnProperty(prefix = "swagger2", name = { "enabled" }, havingValue = "true"))
-swagger2:
-  enabled: false      
+# 应用自定义配置  
+app:
+         # 是否开启swagger文档（开发、测试环境建议开启，生成环境必须关闭）
+  swagger2-enabled: false 
+  jwt:
+    secret: b3918e1af7f996932339d522ef364e2e7053ab6ce02d888b_${spring.profiles.active}
+    iss: b2f8d644266f330d5dfabe5524aca6302546f0184132207b616_${spring.profiles.active}
+    exp: 54000000 # 15 小时
+      # 无需认证的URL
+  no-auth-patterns: /actuator/**,/login,/verifyToken,/signin,/resources/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/**/v2/api-docs/**      
           
 # tx-lcn distributed transaction client config  
 tx-lcn: 

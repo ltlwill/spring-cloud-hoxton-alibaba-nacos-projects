@@ -8,4 +8,5 @@ management:
         include: "*"
   health:
     db:
-      enabled: false   # 此项目没有数据源，需要关闭，否则健康检查时会报错，导致认为应用是无效的：o.s.b.a.jdbc.DataSourceHealthIndicator   : DataSource health check failed     
+      enabled: false   # 此项目没有数据源，需要关闭，否则健康检查时会报错，导致认为应用是无效的：o.s.b.a.jdbc.DataSourceHealthIndicator   : DataSource health check failed   
+        

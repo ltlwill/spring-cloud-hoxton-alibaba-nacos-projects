@@ -92,13 +92,13 @@ public class DataCollectionTaskServiceImpl extends BaseServiceImpl implements Da
 		params.setThreadCount(task.getThreadCount());
 		if (Integer.valueOf(DataCollectionTask.Type.SINGLE_PRODUCT).equals(task.getType())) { // 按单品采集
 			params.setEntranceUrls(task.getUrls());
-			new Ali1688PageProcessor(task.getId(), params).run();
+			new Ali1688PageProcessor(task, params).run();
 		} else if (Integer.valueOf(DataCollectionTask.Type.KEYWORD).equals(task.getType())) { // 按关键词采集
 			params.setEntranceUrls(Arrays.asList(Constants.Entrance.ALI_RE_1688));
 			task.getKeywords().forEach(keyword -> {
 				params.setKeyword(keyword);
 				try {
-					new Ali1688PageProcessor(task.getId(), params).run();
+					new Ali1688PageProcessor(task, params).run();
 				} catch (Exception e) {
 					logger.error(String.format("执行数据采集任务出错，task ID=%s", task.getId()), e);
 					throw new RuntimeException(e);

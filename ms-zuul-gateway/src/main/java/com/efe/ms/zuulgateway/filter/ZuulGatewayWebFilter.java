@@ -19,10 +19,12 @@ import org.springframework.core.annotation.Order;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.efe.ms.common.config.AppConfiguration;
 import com.efe.ms.common.constant.Constants;
 import com.efe.ms.common.domain.BusinessResult;
 import com.efe.ms.common.domain.UserInfoDTO;
 import com.efe.ms.common.util.RequestMatcherUtil;
+import com.efe.ms.common.util.SpringBeanUtil;
 import com.efe.ms.common.util.WebRequestContextHolder;
 import com.efe.ms.zuulgateway.utils.RedisOperateUtil;
 
@@ -35,7 +37,7 @@ import io.lettuce.core.RedisConnectionException;
  *
  */
 @WebFilter(filterName="zuulGatewayWebFilter",urlPatterns="/*")
-@Order(0)
+@Order(1)
 public class ZuulGatewayWebFilter implements Filter {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ZuulGatewayWebFilter.class);
@@ -51,12 +53,14 @@ public class ZuulGatewayWebFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse res = (HttpServletResponse)response;
-		if(RequestMatcherUtil.isNoAuth(req) || isSwaggerReferer(req)) { // 无需认证
+		AppConfiguration appCfg = SpringBeanUtil.getBean(AppConfiguration.class);
+		// 无需认证，swagger-ui.html里面的ajax请求在开启swagger文档时不需要拦截
+		if(RequestMatcherUtil.isNoAuth(req) || (isSwaggerReferer(req) && appCfg.isSwagger2Enabled())) { 
 			chain.doFilter(req, res);
 			return;
 		}
 		String accessToken = req.getHeader(Constants.Headers.ACCESS_TOKEN);
-		if(StringUtils.isBlank(accessToken)) { //没有访问令牌
+		if(StringUtils.isBlank(accessToken)) { // 没有访问令牌
 			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); 
 			res.getWriter().write(JSON.toJSONString(BusinessResult.fail("No access token")));
 			return;
@@ -64,7 +68,7 @@ public class ZuulGatewayWebFilter implements Filter {
 		String userStr = getLoginInfoFromRedisWithRetry(accessToken,2);
 		if(StringUtils.isBlank(userStr)) { // 没有登录信息
 			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			res.getWriter().write(JSON.toJSONString(BusinessResult.fail("Invalid access token")));
+			res.getWriter().write(JSON.toJSONString(BusinessResult.fail("User is not logged in")));
 			return;
 		}
 		setTransferUserInfo(userStr,accessToken);
@@ -89,6 +93,7 @@ public class ZuulGatewayWebFilter implements Filter {
 	
 	private String getLoginInfoFromRedisWithRetry(String accessToken,int times){
 		try {
+			if(StringUtils.isBlank(accessToken)) return null;
 			return getLoginInfoFromRedis(accessToken);
 		}catch (RedisConnectionException e) {
 			if(times < 0) {
@@ -109,6 +114,7 @@ public class ZuulGatewayWebFilter implements Filter {
 		return RedisOperateUtil.get(accessToken);
 	}
 	
+	@SuppressWarnings("unused")
 	private boolean isSwaggerReferer(HttpServletRequest req) {
 		String referer = req.getHeader("referer");
 		String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + SWAGGER_UI_REFERER_END_STR;

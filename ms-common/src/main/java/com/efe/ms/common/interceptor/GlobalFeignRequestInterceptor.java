@@ -33,6 +33,7 @@ public class GlobalFeignRequestInterceptor implements RequestInterceptor {
 			if (userInfo != null) {
 				template.header(Constants.Headers.LOGIN_USER_INFO,
 						JSON.toJSONString(userInfo));
+				template.header(Constants.Headers.ACCESS_TOKEN, userInfo.getAccessToken());
 			}
 		} catch (Exception e) {
 			logger.error("FeignRequestInterceptor 设置用户信息失败", e);

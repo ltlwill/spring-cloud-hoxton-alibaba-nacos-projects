@@ -72,7 +72,7 @@ public class Ali1688ProductServiceImpl extends BaseServiceImpl implements Ali168
 		task = dataCollectionTaskService.add(task);
 		try {
 			params.setEntranceUrls(Arrays.asList(Constants.Entrance.ALI_RE_1688));
-			new Ali1688PageProcessor(task.getId(),params).run();
+			new Ali1688PageProcessor(task,params).run();
 			task.setStatus(DataCollectionTask.Status.PROCESS_SUCCESS);
 		}catch (Exception e) {
 			task.setStatus(DataCollectionTask.Status.PROCESS_FAIL);

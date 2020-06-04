@@ -17,6 +17,8 @@ public interface Ali1688ProductRepository extends MongoRepository<Ali1688Product
 	 * @param page
 	 * @return
 	 */
-	@Query(value="{$or: [{taskNo: {$regex: \"^.*(?i)?1.*$\"}},{productId: {$regex: \"^.*(?i)?1.*$\"}},{productName: {$regex: \"^.*(?i)?1.*$\"}},{\"seller.sellerName\": {$regex: \"^.*(?i)?1.*$\"}}]}")
+	@Query(value="{$or: [{taskNo: {$regex: \"^.*(?i)?1.*$\"}},{productId: {$regex: \"^.*(?i)?1.*$\"}},"
+			+ "{productName: {$regex: \"^.*(?i)?1.*$\"}},{userName: {$regex: \"^.*(?i)?1.*$\"}},{searchKeyword: {$regex: \"^.*(?i)?1.*$\"}},"
+			+ "{\"seller.sellerName\": {$regex: \"^.*(?i)?1.*$\"}}]}")
 	Page<Ali1688Product> findAllByKeyword(Example<Ali1688Product> example,String keyword,Pageable page);
 }

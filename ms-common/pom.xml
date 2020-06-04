@@ -13,6 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <fastjson.version>1.2.68</fastjson.version>
+    <java-jwt.version>3.8.2</java-jwt.version>
     <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
   </properties>
   
@@ -42,6 +43,12 @@
 	    <artifactId>fastjson</artifactId>
 	    <version>${fastjson.version}</version>
 	</dependency>
+	<!-- jwt -->
+      <dependency>
+	  	  <groupId>com.auth0</groupId>
+		  <artifactId>java-jwt</artifactId>
+		  <version>${java-jwt.version}</version>
+	  </dependency>
   </dependencies>
   
   <!-- <build>

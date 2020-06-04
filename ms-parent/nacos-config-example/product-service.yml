@@ -7,3 +7,7 @@ spring:
     password: pwd
     hikari:
       connection-test-query: select 1 from dual
+# 应用自定义配置      
+app:
+  # 无需认证的URL
+  no-auth-patterns: /actuator/**,/login,/signin,/resources/**,/swagger-resources/**,/swagger-ui.html,/webjars/**,/**/v2/api-docs/**      

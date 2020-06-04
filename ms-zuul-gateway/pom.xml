@@ -10,7 +10,7 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-  	  <java-jwt.version>3.8.2</java-jwt.version>
+  	  
   </properties>
   
    <!-- parent pom -->
@@ -49,12 +49,7 @@
           <artifactId>springfox-swagger-ui</artifactId>
           <version>${swagger.version}</version>
       </dependency>
-      <!-- jwt -->
-      <dependency>
-	  	  <groupId>com.auth0</groupId>
-		  <artifactId>java-jwt</artifactId>
-		  <version>${java-jwt.version}</version>
-	  </dependency>
+      
 	  
 	  <!-- lombok -->
       <dependency>

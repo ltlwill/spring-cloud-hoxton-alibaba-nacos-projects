@@ -15,7 +15,7 @@ import com.efe.ms.common.filter.WebGlobalFilter;
 @Configuration
 public class FilterConfiguration {
 	
-	private static final int DEFAULT_FILTER_ORDER = 1;
+	private static final int DEFAULT_FILTER_ORDER = 0;
 	
 	@Bean
     public FilterRegistrationBean<WebGlobalFilter> filterRegistrationBean(){

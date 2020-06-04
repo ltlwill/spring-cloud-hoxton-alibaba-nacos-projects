@@ -1,4 +1,4 @@
-package com.efe.ms.zuulgateway.utils;
+package com.efe.ms.common.util;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -100,8 +100,7 @@ public final class JWTUtil {
 					.withIssuer(iss)
 					.build();
 			DecodedJWT jwt = verifier.verify(token);
-			if(jwt == null) return false;
-			return true;
+			return jwt != null;
 		} catch (Exception e){
 			return false;
 		}

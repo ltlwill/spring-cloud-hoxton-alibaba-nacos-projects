@@ -49,6 +49,10 @@ public class Product extends BizModel {
 	
 	protected Seller seller;
 	
+	protected String userId;
+	
+	protected String userName;
+	
 	public static final class Status{
 		public static final int INVALID = 0; // 无效
 		public static final int VALID = 1;   // 有效

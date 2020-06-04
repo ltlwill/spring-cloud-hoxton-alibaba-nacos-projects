@@ -12,6 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.efe.ms.crawlerservice.constant.Constants;
+import com.efe.ms.crawlerservice.model.common.DataCollectionTask;
 import com.efe.ms.crawlerservice.model.common.Product;
 import com.efe.ms.crawlerservice.model.common.crawlParams;
 import com.efe.ms.crawlerservice.webmagic.parser.ali1688.Ali1688PageParser;
@@ -42,21 +43,22 @@ public class Ali1688PageProcessor extends BasePageProcessor {
 	private static final String KEY_CONCAT_CHAR = "|";
 
 	private crawlParams params;
-	private String taskNo = System.nanoTime() + "";
 	private int total = 0;
 	private int errorCount = 0;
 	private Set<String> keySet = new HashSet<>();
+	private DataCollectionTask task;
+	
 
 	public Ali1688PageProcessor() {
-		this("", new crawlParams(KEYWORDS, null, PAGE_COUNT, THREAD_COUNT,3,500));
+		this(null, new crawlParams(KEYWORDS, null, PAGE_COUNT, THREAD_COUNT,3,500));
 	}
 
-	public Ali1688PageProcessor(String taskNo) {
-		this(taskNo, new crawlParams(KEYWORDS, null, PAGE_COUNT, THREAD_COUNT,3,500));
+	public Ali1688PageProcessor(DataCollectionTask task) {
+		this(task, new crawlParams(KEYWORDS, null, PAGE_COUNT, THREAD_COUNT,3,500));
 	}
 
-	public Ali1688PageProcessor(String taskNo, crawlParams params) {
-		this.taskNo = taskNo;
+	public Ali1688PageProcessor(DataCollectionTask task, crawlParams params) {
+		this.task = task;
 		this.params = params;
 	}
 
@@ -65,7 +67,7 @@ public class Ali1688PageProcessor extends BasePageProcessor {
 		Selectable url = page.getUrl();
 		if (url.regex("(.*)offer.htm(.*)").match()) { // 列表页
 //			setTaskNo(page);
-			addJsonpTargetUrls(page, this.params.getPageCount());
+			addJsonpTargetUrls(page, params.getPageCount());
 		} else if (url.regex("(.*)get_premium_offer_list.json(.*)").match()) { // jsonp 的ajax请求
 			JSONObject json = extraDataFromJsonp(page.getRawText());
 			addProductDetailTargetUrls(page, json);
@@ -79,8 +81,10 @@ public class Ali1688PageProcessor extends BasePageProcessor {
 					return;
 				}
 				Product product = ParserBuilder.build(Ali1688PageParser.class).parse(page); // 解析页面
-				product.setTaskNo(this.taskNo);
-				product.setSearchKeyword(this.params.getKeyword());
+				product.setTaskNo(task == null ? null : task.getId());
+				product.setUserId(task == null ? null : task.getUserId());
+				product.setUserName(task == null ? null : task.getUserName());
+				product.setSearchKeyword(params.getKeyword());
 				page.putField(Constants.PRODUCT_FIELD_NAME, product);
 			} catch (Exception e) {
 				this.errorCount++;
@@ -182,16 +186,6 @@ public class Ali1688PageProcessor extends BasePageProcessor {
 	@Override
 	protected int getSleepMilliseconds() {
 		return this.params.getSleepMilliseconds();
-	}
-
-	/**
-	 * 设置当前的任务编号，编号为当前执行时的时间戳
-	 * 
-	 * @param page
-	 */
-	@SuppressWarnings("unused")
-	private void setTaskNo(Page page) {
-		this.taskNo = Constants.TASK_NO_FIELD_NAME + "";
 	}
 
 	/*
