@@ -17,6 +17,7 @@ public class BusinessResult extends SerializationEntity {
 	public static final class ResultCode {
 		public final static int SUCCESS = 1; // 成功
 		public final static int FAIL = 0; // 失败
+		public final static int INVALID_TOKEN = 2001; // 无效token
 	}
 
 	public BusinessResult() {
@@ -27,6 +28,7 @@ public class BusinessResult extends SerializationEntity {
 	}
 
 	public BusinessResult(int resultCode, String message) {
+		this.resultCode = resultCode;
 		this.message = message;
 	}
 
@@ -95,5 +97,8 @@ public class BusinessResult extends SerializationEntity {
 
 	public static BusinessResult fail(String message) {
 		return new BusinessResult(BusinessResult.ResultCode.FAIL, message);
+	}
+	public static BusinessResult fail(int resultCode,String message) {
+		return new BusinessResult(resultCode, message);
 	}
 }

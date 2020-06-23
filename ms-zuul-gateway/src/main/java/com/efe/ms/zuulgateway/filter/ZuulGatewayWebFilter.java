@@ -36,88 +36,85 @@ import io.lettuce.core.RedisConnectionException;
  * @author liutianlong
  *
  */
-@WebFilter(filterName="zuulGatewayWebFilter",urlPatterns="/*")
+@WebFilter(filterName = "zuulGatewayWebFilter", urlPatterns = "/*")
 @Order(1)
 public class ZuulGatewayWebFilter implements Filter {
-	private static final Logger logger = LoggerFactory
-			.getLogger(ZuulGatewayWebFilter.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(ZuulGatewayWebFilter.class);
+
 	private static final String SWAGGER_UI_REFERER_END_STR = "/swagger-ui.html";
-	
+
 	@Override
 	public void destroy() {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest)request;
-		HttpServletResponse res = (HttpServletResponse)response;
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 		AppConfiguration appCfg = SpringBeanUtil.getBean(AppConfiguration.class);
 		// 无需认证，swagger-ui.html里面的ajax请求在开启swagger文档时不需要拦截
-		if(RequestMatcherUtil.isNoAuth(req) || (isSwaggerReferer(req) && appCfg.isSwagger2Enabled())) { 
+		if (RequestMatcherUtil.isNoAuth(req) || (appCfg.isSwagger2Enabled() && isSwaggerReferer(req))) {
 			chain.doFilter(req, res);
 			return;
 		}
 		String accessToken = req.getHeader(Constants.Headers.ACCESS_TOKEN);
-		if(StringUtils.isBlank(accessToken)) { // 没有访问令牌
-			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); 
-			res.getWriter().write(JSON.toJSONString(BusinessResult.fail("No access token")));
-			return;
-		}
-		String userStr = getLoginInfoFromRedisWithRetry(accessToken,2);
-		if(StringUtils.isBlank(userStr)) { // 没有登录信息
+		String userStr = getLoginInfoFromRedisWithRetry(accessToken, 2);
+		if (StringUtils.isBlank(userStr)) { // 没有登录信息
 			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			res.getWriter().write(JSON.toJSONString(BusinessResult.fail("User is not logged in")));
+			res.getWriter().write(JSON.toJSONString(
+					BusinessResult.fail(BusinessResult.ResultCode.INVALID_TOKEN, "User is not logged in")));
 			return;
 		}
-		setTransferUserInfo(userStr,accessToken);
+		setTransferUserInfo(userStr, accessToken);
 		chain.doFilter(req, res);
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 	}
-	
-	private void setTransferUserInfo(String userStr,String accessToken){
+
+	private void setTransferUserInfo(String userStr, String accessToken) {
 		logger.info("---ZuulGatewayWebFilter.setTransferUserInfo---");
-		try{
+		try {
 			UserInfoDTO userInfo = JSONObject.parseObject(userStr, UserInfoDTO.class);
 			userInfo.setAccessToken(accessToken);
 			WebRequestContextHolder.setUserInfo(userInfo);
-		}catch(Exception e){
-			logger.error("ZuulGatewayWebFilter 设置传递user信息失败",e); 
+		} catch (Exception e) {
+			logger.error("ZuulGatewayWebFilter 设置传递user信息失败", e);
 		}
-		
+
 	}
-	
-	private String getLoginInfoFromRedisWithRetry(String accessToken,int times){
+
+	private String getLoginInfoFromRedisWithRetry(String accessToken, int times) {
 		try {
-			if(StringUtils.isBlank(accessToken)) return null;
+			if (StringUtils.isBlank(accessToken))
+				return null;
 			return getLoginInfoFromRedis(accessToken);
-		}catch (RedisConnectionException e) {
-			if(times < 0) {
+		} catch (RedisConnectionException e) {
+			if (times < 0) {
 				throw new RuntimeException(e);
 			}
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e1) {
-				logger.error("thread sleep error",e);
+				logger.error("thread sleep error", e);
 			}
-			return getLoginInfoFromRedisWithRetry(accessToken,times --);
-		}catch (Exception e) {
+			return getLoginInfoFromRedisWithRetry(accessToken, times--);
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private String getLoginInfoFromRedis(String accessToken) {
 		return RedisOperateUtil.get(accessToken);
 	}
-	
+
 	@SuppressWarnings("unused")
 	private boolean isSwaggerReferer(HttpServletRequest req) {
 		String referer = req.getHeader("referer");
-		String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + SWAGGER_UI_REFERER_END_STR;
+		String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
+				+ SWAGGER_UI_REFERER_END_STR;
 		return StringUtils.isNotBlank(referer) && referer.startsWith(url);
-	}	
+	}
 }

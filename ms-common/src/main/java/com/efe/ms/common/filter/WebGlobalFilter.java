@@ -45,23 +45,19 @@ public class WebGlobalFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		logger.debug("自定义filter doFilter...");
-		HttpServletRequest req = (HttpServletRequest)request;
-		HttpServletResponse res = (HttpServletResponse)response;
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 		AppConfiguration appCfg = SpringBeanUtil.getBean(AppConfiguration.class);
 		// 无需认证，swagger-ui.html里面的ajax请求在开启swagger文档时不需要拦截
-		if(RequestMatcherUtil.isNoAuth(req) || (isSwaggerReferer(req) && appCfg.isSwagger2Enabled())) { 
+		if (RequestMatcherUtil.isNoAuth(req) || (appCfg.isSwagger2Enabled() && isSwaggerReferer(req))) {
 			chain.doFilter(req, res);
 			return;
 		}
 		String accessToken = req.getHeader(Constants.Headers.ACCESS_TOKEN);
-		if(StringUtils.isBlank(accessToken)) { // 没有访问令牌
-			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); 
-			res.getWriter().write(JSON.toJSONString(BusinessResult.fail("No access token")));
-			return;
-		}
-		if(!JWTUtil.verify(appCfg == null ? null : appCfg.getJwt(),accessToken)) { // 无效 令牌
+		if (!JWTUtil.verify(appCfg == null ? null : appCfg.getJwt(), accessToken)) { // 无效 令牌
 			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			res.getWriter().write(JSON.toJSONString(BusinessResult.fail("Invalid access token")));
+			res.getWriter().write(JSON.toJSONString(
+					BusinessResult.fail(BusinessResult.ResultCode.INVALID_TOKEN, "Invalid access token")));
 			return;
 		}
 		setTransferUserInfo((HttpServletRequest) request);
@@ -78,7 +74,7 @@ public class WebGlobalFilter implements Filter {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			String userInfoStr = httpRequest.getHeader(Constants.Headers.LOGIN_USER_INFO);
 			if (StringUtils.isNotBlank(userInfoStr)) {
-				UserInfoDTO userInfo = JSON.parseObject(URLDecoder.decode(userInfoStr, Constants.DEFAULT_CHARSET), 
+				UserInfoDTO userInfo = JSON.parseObject(URLDecoder.decode(userInfoStr, Constants.DEFAULT_CHARSET),
 						UserInfoDTO.class);
 				WebRequestContextHolder.setUserInfo(userInfo);
 			}
@@ -87,11 +83,12 @@ public class WebGlobalFilter implements Filter {
 		}
 
 	}
-	
+
 	@SuppressWarnings("unused")
 	private boolean isSwaggerReferer(HttpServletRequest req) {
 		String referer = req.getHeader("referer");
-		String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + SWAGGER_UI_REFERER_END_STR;
+		String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
+				+ SWAGGER_UI_REFERER_END_STR;
 		return StringUtils.isNotBlank(referer) && referer.startsWith(url);
 	}
 

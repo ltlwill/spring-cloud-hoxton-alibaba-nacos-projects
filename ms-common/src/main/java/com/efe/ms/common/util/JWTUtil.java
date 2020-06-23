@@ -92,6 +92,9 @@ public final class JWTUtil {
 		return verify(null,token);
 	}
 	public static boolean verify(JWTConfig cfg,String token) throws JWTVerificationException{
+		if(token == null || "".equals(token.trim())) {
+			return false;
+		}
 		try {
 			String secret = cfg == null || cfg.getSecret() == null ? PUBLIC_SECRET : cfg.getSecret();
 			String iss = cfg == null || cfg.getIss() == null ? ISSUSER : cfg.getIss();
