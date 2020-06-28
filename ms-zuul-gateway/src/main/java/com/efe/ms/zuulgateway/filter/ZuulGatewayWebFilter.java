@@ -96,7 +96,7 @@ public class ZuulGatewayWebFilter implements Filter {
 				throw new RuntimeException(e);
 			}
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException e1) {
 				logger.error("thread sleep error", e);
 			}
