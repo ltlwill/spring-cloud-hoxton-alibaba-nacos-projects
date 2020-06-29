@@ -2,16 +2,18 @@ package com.efe.ms.common;
 
 import org.junit.Test;
 
-import com.efe.ms.common.util.AESUtil;
-import com.efe.ms.common.util.EncryptUtil;
+import com.efe.ms.common.util.AESEncryptUtil;
+import com.efe.ms.common.util.SHAEncryptUtil;
+import com.efe.ms.common.util.RSAEncryptUtil;
+import com.efe.ms.common.util.RSAEncryptUtil.keyPairDesc;
 
 public class AlgorithmTest {
 	
 	@Test
 	public void test1() {
 		String str = "abcd111";
-		System.out.println(EncryptUtil.SHA256(str));
-		System.out.println(EncryptUtil.SHA512(str));
+		System.out.println(SHAEncryptUtil.SHA256(str));
+		System.out.println(SHAEncryptUtil.SHA512(str));
 	}
 	
 	/**
@@ -30,9 +32,22 @@ public class AlgorithmTest {
 		String str = "123456";
 		System.out.println("原始值：" + str);
 		String key = "12@$**^^%#@221&&@^@!@872120921@***!!@~~!";
-		String res = AESUtil.encrypt(str, key);
+		String res = AESEncryptUtil.encrypt(str, key);
 		System.out.println("AES加密后：" + res);
-		System.out.println("AES解密后：" + AESUtil.decrypt(res, key));
+		System.out.println("AES解密后：" + AESEncryptUtil.decrypt(res, key));
+	}
+	
+	@Test
+	public void test3() throws Exception{
+		String str = "123456";
+		String pwd = "&*&@!!200@!@";
+		System.out.println("原始数据：" + str);
+		keyPairDesc desc = RSAEncryptUtil.genKeyPair(pwd);
+		String enStr = RSAEncryptUtil.encrypt(str, desc.getPublicKey());
+		System.out.println("公匙加密：" + enStr);
+//		desc = RSAEncryptUtil.genKeyPair(pwd);
+		String deStr = RSAEncryptUtil.decrypt(enStr, desc.getPrivateKey());
+		System.out.println("私匙解密：" + deStr);
 	}
 
 }
