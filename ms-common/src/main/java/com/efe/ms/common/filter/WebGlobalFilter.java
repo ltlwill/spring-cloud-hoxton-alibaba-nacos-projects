@@ -69,7 +69,6 @@ public class WebGlobalFilter implements Filter {
 	}
 
 	private void setTransferUserInfo(ServletRequest request) {
-//		logger.info("---WebGlobalFilter.setTransferUserInfo---");
 		try {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			String userInfoStr = httpRequest.getHeader(Constants.Headers.LOGIN_USER_INFO);
@@ -84,7 +83,6 @@ public class WebGlobalFilter implements Filter {
 
 	}
 
-	@SuppressWarnings("unused")
 	private boolean isSwaggerReferer(HttpServletRequest req) {
 		String referer = req.getHeader("referer");
 		String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()

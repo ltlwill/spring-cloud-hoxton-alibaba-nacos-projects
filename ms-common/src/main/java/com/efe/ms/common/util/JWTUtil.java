@@ -11,7 +11,10 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.efe.ms.common.config.AppConfiguration.JWTConfig;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * JSON web token(JWT) 工具类
@@ -91,6 +94,7 @@ public final class JWTUtil {
 	public static boolean verify(String token) throws JWTVerificationException{
 		return verify(null,token);
 	}
+	
 	public static boolean verify(JWTConfig cfg,String token) throws JWTVerificationException{
 		if(token == null || "".equals(token.trim())) {
 			return false;
@@ -107,6 +111,20 @@ public final class JWTUtil {
 		} catch (Exception e){
 			return false;
 		}
+	}
+	
+	@Setter
+	@Getter
+	@NoArgsConstructor
+	public static class JWTConfig{
+		private String secret; // 密匙
+		private String iss; // jwt签发者
+		private String sub; // jwt所面向的用户
+		private String aud; // 接收jwt的一方
+		private Long exp;   // jwt的过期时间，这个过期时间必须要大于签发时间(毫秒)
+		private String nbf; // 定义在什么时间之前，该jwt都是不可用的
+		private String iat; // jwt的签发时间
+		private String jti; // jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
 	}
 	
 }

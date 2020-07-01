@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe.ms.common.config.AppConfiguration;
-import com.efe.ms.zuulgateway.utils.JWTUtil;
+import com.efe.ms.common.util.JWTUtil;
 
 /**
  * 

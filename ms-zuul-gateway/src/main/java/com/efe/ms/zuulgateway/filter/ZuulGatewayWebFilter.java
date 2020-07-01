@@ -110,7 +110,6 @@ public class ZuulGatewayWebFilter implements Filter {
 		return RedisOperateUtil.get(accessToken);
 	}
 
-	@SuppressWarnings("unused")
 	private boolean isSwaggerReferer(HttpServletRequest req) {
 		String referer = req.getHeader("referer");
 		String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
