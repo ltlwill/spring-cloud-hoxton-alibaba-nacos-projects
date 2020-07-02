@@ -16,11 +16,14 @@ spring:
   # alibaba nacos
   cloud: 
     nacos: 
+      server-addr: ${nacos-server-address}
+                     # 如果nacos server服务中开启了认证：nacos.core.auth.enabled=false
+                     # 正式环境 可以在命令行设置正式环境用户的参数 ,such as: --spring.cloud.nacos.username=usr --spring.cloud.nacos.password=pwd
+      username: ms-client-dev
+      password: dev1234
       discovery: 
-        server-addr: ${nacos-server-address}
         namespace: ${nacos-namespace-${spring.profiles.active}}
       config: 
-        server-addr: ${nacos-server-address}
         file-extension: yml
         namespace: ${nacos-namespace-${spring.profiles.active}}
         # 共享配置
