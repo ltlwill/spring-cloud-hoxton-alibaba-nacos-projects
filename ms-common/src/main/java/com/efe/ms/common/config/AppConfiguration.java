@@ -24,6 +24,8 @@ public class AppConfiguration {
 	
 	private boolean swagger2Enabled;
 	
+	private boolean verifyTokenEnabled = true;
+	
 	public List<String> getNoAuthPatterns() {
 		return noAuthPatterns;
 	}
@@ -51,6 +53,14 @@ public class AppConfiguration {
 
 	public void setSwagger2Enabled(boolean swagger2Enabled) {
 		this.swagger2Enabled = swagger2Enabled;
+	}
+
+	public boolean isVerifyTokenEnabled() {
+		return verifyTokenEnabled;
+	}
+
+	public void setVerifyTokenEnabled(boolean verifyTokenEnabled) {
+		this.verifyTokenEnabled = verifyTokenEnabled;
 	}
 
 	private void refreshMatchers() {

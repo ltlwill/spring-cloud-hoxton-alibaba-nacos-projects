@@ -54,7 +54,7 @@ public class WebGlobalFilter implements Filter {
 			return;
 		}
 		String accessToken = req.getHeader(Constants.Headers.ACCESS_TOKEN);
-		if (!JWTUtil.verify(appCfg == null ? null : appCfg.getJwt(), accessToken)) { // 无效 令牌
+		if (appCfg.isVerifyTokenEnabled() && !JWTUtil.verify(appCfg == null ? null : appCfg.getJwt(), accessToken)) { // 无效 令牌
 			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			res.getWriter().write(JSON.toJSONString(
 					BusinessResult.fail(BusinessResult.ResultCode.INVALID_TOKEN, "Invalid access token")));

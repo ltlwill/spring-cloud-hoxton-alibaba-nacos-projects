@@ -60,7 +60,7 @@ public class ZuulGatewayWebFilter implements Filter {
 		}
 		String accessToken = req.getHeader(Constants.Headers.ACCESS_TOKEN);
 		String userStr = getLoginInfoFromRedisWithRetry(accessToken, 2);
-		if (StringUtils.isBlank(userStr)) { // 没有登录信息
+		if (appCfg.isVerifyTokenEnabled() && StringUtils.isBlank(userStr)) { // 没有登录信息
 			res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			res.getWriter().write(JSON.toJSONString(
 					BusinessResult.fail(BusinessResult.ResultCode.INVALID_TOKEN, "User is not logged in")));
