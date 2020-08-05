@@ -62,6 +62,8 @@ feign:
 app:
          # 是否开启swagger文档（开发、测试环境建议开启，生成环境必须关闭）
   swagger2-enabled: false 
+      # 在服务建调用时是否启用token验证（开发环境可以关闭，生产环境必须开启）
+  verify-token-enabled: false 
   jwt:
     secret: b3918e1af7f996932339d522ef364e2e7053ab6ce02d888b_${spring.profiles.active}
     iss: b2f8d644266f330d5dfabe5524aca6302546f0184132207b616_${spring.profiles.active}
