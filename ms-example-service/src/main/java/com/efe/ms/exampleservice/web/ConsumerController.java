@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import com.efe.ms.common.vo.BusinessResult;
 import com.efe.ms.exampleservice.model.biz.Combo;
 import com.efe.ms.exampleservice.model.biz.Product;
 import com.efe.ms.exampleservice.service.ConsumerService;
@@ -35,6 +37,9 @@ public class ConsumerController {
 	
 	@Autowired
 	private ConsumerService consumerService;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 	
 	@GetMapping
 	public String getAppInfo(){
@@ -62,6 +67,13 @@ public class ConsumerController {
 	public Pagination<Product> getProducts(Pagination<Product> page,Product product) throws Exception{
 		Pagination<Product> pageData = consumerService.getProducts(page, product);
 		return pageData;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@GetMapping("/products/rest")
+	public BusinessResult<?> findAllProductsUseRest() throws Exception{
+		Pagination<Product> products = restTemplate.getForObject("http://product-service/products", Pagination.class);
+		return BusinessResult.success(products);
 	}
 	
 	@GetMapping("/products/{sku}")
