@@ -47,7 +47,7 @@ public class Swagger2 {
 				.apiInfo(getApiInfo())
 				.select()
 				.apis(RequestHandlerSelectors
-						.basePackage("com.efe.ms.crawlerservice.web"))
+						.basePackage(this.getClass().getPackage().getName()))
 				.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
 				.apis(RequestHandlerSelectors
 						.withMethodAnnotation(ApiOperation.class))

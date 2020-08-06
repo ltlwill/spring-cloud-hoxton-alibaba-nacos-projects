@@ -47,7 +47,8 @@ public class Swagger2 {
 			public String getApplicationBasePath() {
 				return super.getDocumentationPath() + applicationName;
 			}
-		}).apiInfo(getApiInfo()).select().apis(RequestHandlerSelectors.basePackage("com.efe.ms.zuulgateway.web"))
+		}).apiInfo(getApiInfo()).select()
+				.apis(RequestHandlerSelectors.basePackage(this.getClass().getPackage().getName()))
 				.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
 				.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).paths(PathSelectors.any())
 				.build().globalOperationParameters(parameters());
