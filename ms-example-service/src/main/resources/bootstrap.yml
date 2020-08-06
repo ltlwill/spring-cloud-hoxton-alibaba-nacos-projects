@@ -1,0 +1,36 @@
+# nacos 固定值配置
+nacos-server-address-dev: 192.168.10.55:8848
+nacos-server-address-test: 192.168.2.108:8848
+nacos-server-address-pro: 192.168.2.108:8848
+nacos-namespace-dev: 27cbb1e5-f163-47a7-a164-9c16ac4c8781
+nacos-namespace-test: 4a9813b1-b0c8-49c1-ba5c-19f8a88e34ff
+nacos-namespace-pro: 5240df01-7020-4692-852e-db3f019f8097
+
+# spring
+spring:
+  application:
+    name: example-service
+  profiles:
+    active: dev
+  # alibaba nacos
+  cloud: 
+    nacos: 
+      server-addr: ${nacos-server-address-${spring.profiles.active}}
+      username: ms-client-dev
+      password: dev1234
+      discovery: 
+        namespace: ${nacos-namespace-${spring.profiles.active}}
+      config: 
+        file-extension: yml
+        namespace: ${nacos-namespace-${spring.profiles.active}}
+        # 共享配置
+        shared-configs:
+        - data-id: common-config.yml
+          group: DEFAULT_GROUP
+          refresh: true
+        - data-id: rabbitmq-config.yml
+          group: DEFAULT_GROUP
+          refresh: true
+        - data-id: redis-config.yml
+          group: DEFAULT_GROUP
+          refresh: true  
