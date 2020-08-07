@@ -10,6 +10,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -40,6 +41,12 @@ public class ServiceConsumerApplication {
 	@Bean
 	@LoadBalanced
 	public RestTemplate restTemplate(){
-		return new RestTemplate();
+		/*
+		 * RestTemplate 有3中客户端实现方式：
+		 * 1、SimpleClientHttpRequestFactory 对应的HTTP库是java JDK自带的HttpURLConnection
+		 * 2、HttpComponentsAsyncClientHttpRequestFactory 对应的HTTP库是Apache HttpComponents
+		 * 3、OkHttp3ClientHttpRequestFactory 对应的HTTP库是OkHttp
+		 */
+		return new RestTemplate(new OkHttp3ClientHttpRequestFactory()); // 使用 okhttp3
 	}
 }
