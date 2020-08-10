@@ -5,4 +5,6 @@ spring:
     url: jdbc:mysql://192.168.x.y:3306/crawler_db?serverTimezone=Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
     username: user
     password: pwd
-  
+logging:
+  level:
+    root: error   
