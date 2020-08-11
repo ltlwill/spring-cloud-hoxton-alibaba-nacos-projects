@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.efe.ms.common.annotation.UnuseUnifiedResponse;
 import com.efe.ms.common.domain.UserInfoDTO;
 import com.efe.ms.common.util.WebRequestContextHolder;
 import com.efe.ms.productservice.domain.Combo;
@@ -29,6 +30,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Api(tags = "产品API")
 @RestController
+//@UnuseUnifiedResponse // 不使用统一返回响应处理
 @RequestMapping("/products")
 public class ProductController extends BaseController {
 
@@ -51,10 +53,11 @@ public class ProductController extends BaseController {
 
 	@ApiOperation(value = "根据SKU获取产品信息")
 	@GetMapping("/{sku}")
+	@UnuseUnifiedResponse // 不使用统一返回响应处理
 	public Product getProductBySku(@PathVariable String sku) {
 		UserInfoDTO user = WebRequestContextHolder.getUserInfo();
 		System.out.println("--user--:" + (user == null ? null : JSON.toJSONString(user)));
-		return productService.getProductBySku(sku);
+		return productService.getProductBySku(sku); 
 	}
 
 	@ApiOperation(value = "根据SKU获取产品的组合信息")

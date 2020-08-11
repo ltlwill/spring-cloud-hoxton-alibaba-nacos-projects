@@ -17,14 +17,11 @@ import com.efe.ms.common.util.JWTUtil.JWTConfig;
 public class AppConfiguration {
 	
 	private JWTConfig jwt;
-	
 	private List<String> noAuthPatterns;
-	
 	private List<RequestMatcher> __matchers;
-	
 	private boolean swagger2Enabled;
-	
 	private boolean verifyTokenEnabled = true;
+	private boolean unifiedResponseEnabled = true;
 	
 	public List<String> getNoAuthPatterns() {
 		return noAuthPatterns;
@@ -61,6 +58,14 @@ public class AppConfiguration {
 
 	public void setVerifyTokenEnabled(boolean verifyTokenEnabled) {
 		this.verifyTokenEnabled = verifyTokenEnabled;
+	}
+
+	public boolean isUnifiedResponseEnabled() {
+		return unifiedResponseEnabled;
+	}
+
+	public void setUnifiedResponseEnabled(boolean unifiedResponseEnabled) {
+		this.unifiedResponseEnabled = unifiedResponseEnabled;
 	}
 
 	private void refreshMatchers() {

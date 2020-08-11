@@ -71,6 +71,8 @@ management:
   #endpoint:
     #health:
       #show-details: always 
+#app: 
+  #unified-response-enabled: false #是否开启统一响应处理     默认：true，即开启
 # 日志
 logging: 
   config: classpath:log-config/logback-${spring.profiles.active}.xml
