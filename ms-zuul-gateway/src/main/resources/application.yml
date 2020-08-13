@@ -34,6 +34,8 @@ zuul:
   - Set-Cookie
   - Authorization  
        # 支持动态刷新路由信息，详见：com.efe.ms.zuulgateway.config.ZuuDynamicRoutesConfig
+  ignored-services:  - aaaaaa-service
+  - bbbbbb-service     
   routes: 
     baidu-route: 
       path: /baidu/**  
@@ -44,6 +46,9 @@ zuul:
     portal-route: 
       path: /portal/**
       url: http://192.168.2.109:9080/
+    product-service: 
+      service-id: product-service
+      path: /myproducts/**  
       
 ribbon: 
   ReadTimeout: 30000
@@ -59,6 +64,14 @@ logging:
 app:
        # 开启 swagger 文档功能  
   swagger2-enabled: true 
+      # 是否开启token验证
+  verify-token-enabled: false
+       # 是否开启统一响应处理
+  unified-response-enabled: true
+      # 是否启用防止xss攻击
+  xss-enabled: true
+       # 开启xss防范时排除的URL
+  #xss-exclude-urls:
   jwt:
     secret: xxx_${spring.profiles.active}
     iss: yyy_${spring.profiles.active}

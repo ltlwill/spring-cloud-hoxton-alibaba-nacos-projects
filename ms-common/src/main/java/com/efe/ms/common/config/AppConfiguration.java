@@ -16,12 +16,21 @@ import com.efe.ms.common.util.JWTUtil.JWTConfig;
 @ConfigurationProperties(prefix = "app")
 public class AppConfiguration {
 	
+	// JWT相关配置
 	private JWTConfig jwt;
+	// 无需认证的url
 	private List<String> noAuthPatterns;
 	private List<RequestMatcher> __matchers;
+	// 是否启用swagger文档
 	private boolean swagger2Enabled;
+	// 是否启用验证token
 	private boolean verifyTokenEnabled = true;
+	//是否启用统一响应处理
 	private boolean unifiedResponseEnabled = true;
+	// 是否启用防范XSS攻击
+	private boolean xssEnabled = true;
+	// 防范XSS攻击时排除的URL
+	private List<String> xssExcludeUrls;
 	
 	public List<String> getNoAuthPatterns() {
 		return noAuthPatterns;
@@ -66,6 +75,22 @@ public class AppConfiguration {
 
 	public void setUnifiedResponseEnabled(boolean unifiedResponseEnabled) {
 		this.unifiedResponseEnabled = unifiedResponseEnabled;
+	}
+
+	public boolean isXssEnabled() {
+		return xssEnabled;
+	}
+
+	public void setXssEnabled(boolean xssEnabled) {
+		this.xssEnabled = xssEnabled;
+	}
+
+	public List<String> getXssExcludeUrls() {
+		return xssExcludeUrls;
+	}
+
+	public void setXssExcludeUrls(List<String> xssExcludeUrls) {
+		this.xssExcludeUrls = xssExcludeUrls;
 	}
 
 	private void refreshMatchers() {
