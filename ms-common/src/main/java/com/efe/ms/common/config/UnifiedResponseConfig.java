@@ -33,14 +33,14 @@ import com.efe.ms.common.vo.ResponseResult;
 @Configuration
 @EnableWebMvc
 public class UnifiedResponseConfig extends WebMvcConfigurerAdapter {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(UnifiedResponseConfig.class);
+	
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		super.configureMessageConverters(converters);
 		converters.add(0, new MappingJackson2HttpMessageConverter());
 	}
-
-	private static final Logger logger = LoggerFactory.getLogger(UnifiedResponseConfig.class);
 
 	@RestControllerAdvice(basePackages = { "com.efe.ms" })
 	@ConditionalOnProperty(prefix = "app", name = {

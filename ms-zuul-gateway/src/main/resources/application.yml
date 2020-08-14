@@ -49,13 +49,16 @@ zuul:
     product-service: 
       service-id: product-service
       path: /myproducts/**  
+      sensitive-headers:      - Cookie
+      - Set-Cookie
       
 ribbon: 
   ReadTimeout: 30000
   ConnectTimeout: 30000
   # ribbon 饥饿加载（由于赖加载各个服务实例信息，导致第一次请求耗时过长）
   #eager-load:    #enabled: true
-    #clients:    #- auth-service      
+    #clients:    #- auth-service     
+  #okhttp:    #enabled: true   
 # 日志
 logging: 
   config: classpath:log-config/logback-${spring.profiles.active}.xml    
