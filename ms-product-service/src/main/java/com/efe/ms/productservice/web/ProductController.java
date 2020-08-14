@@ -3,6 +3,7 @@ package com.efe.ms.productservice.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.efe.ms.common.annotation.UnuseUnifiedResponse;
+import com.efe.ms.common.domain.BusinessResult;
 import com.efe.ms.common.domain.UserInfoDTO;
 import com.efe.ms.common.util.WebRequestContextHolder;
+import com.efe.ms.common.vo.ResponseResult;
 import com.efe.ms.productservice.domain.Combo;
 import com.efe.ms.productservice.domain.Product;
 import com.efe.ms.productservice.service.ProductService;
@@ -43,7 +46,11 @@ public class ProductController extends BaseController {
 	 public Pagination<Product> getAllProducts(Pagination<Product> page, Product product) { 
 		 return productService.getAllProducts(page, product); 
 	 }*/
-	 
+	
+	@GetMapping(value="/name",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public Object name() {
+		return "xxx";
+	}
 
 	@ApiOperation(value = "分页获取产品信息")
 	@GetMapping

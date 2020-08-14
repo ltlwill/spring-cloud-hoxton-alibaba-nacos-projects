@@ -1,6 +1,6 @@
 # nacos 固定值配置
-#nacos-server-address: 127.0.0.1:8848
-nacos-server-address: 192.168.2.108:8848
+nacos-server-address: 127.0.0.1:8848
+#nacos-server-address: 192.168.2.108:8848
 nacos-namespace-dev: 27cbb1e5-f163-47a7-a164-9c16ac4c8781
 nacos-namespace-test: 4a9813b1-b0c8-49c1-ba5c-19f8a88e34ff
 nacos-namespace-pro: 5240df01-7020-4692-852e-db3f019f8097

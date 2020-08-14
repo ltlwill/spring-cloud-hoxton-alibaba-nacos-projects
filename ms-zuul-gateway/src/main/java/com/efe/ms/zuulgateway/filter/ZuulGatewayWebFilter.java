@@ -77,9 +77,11 @@ public class ZuulGatewayWebFilter implements Filter {
 	private void setTransferUserInfo(String userStr, String accessToken) {
 		logger.info("---ZuulGatewayWebFilter.setTransferUserInfo---");
 		try {
-			UserInfoDTO userInfo = JSONObject.parseObject(userStr, UserInfoDTO.class);
-			userInfo.setAccessToken(accessToken);
-			WebRequestContextHolder.setUserInfo(userInfo);
+			if(StringUtils.isNotBlank(userStr)) {
+				UserInfoDTO userInfo = JSONObject.parseObject(userStr, UserInfoDTO.class);
+				userInfo.setAccessToken(accessToken);
+				WebRequestContextHolder.setUserInfo(userInfo);
+			}
 		} catch (Exception e) {
 			logger.error("ZuulGatewayWebFilter 设置传递user信息失败", e);
 		}

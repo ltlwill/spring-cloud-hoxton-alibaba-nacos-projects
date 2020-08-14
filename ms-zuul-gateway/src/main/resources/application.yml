@@ -34,8 +34,8 @@ zuul:
   - Set-Cookie
   - Authorization  
        # 支持动态刷新路由信息，详见：com.efe.ms.zuulgateway.config.ZuuDynamicRoutesConfig
-  ignored-services:  - aaaaaa-service
-  - bbbbbb-service     
+  #ignored-services:  #- aaaaaa-service
+  #- bbbbbb-service     
   routes: 
     baidu-route: 
       path: /baidu/**  

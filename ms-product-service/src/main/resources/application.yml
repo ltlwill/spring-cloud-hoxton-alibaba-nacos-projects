@@ -73,6 +73,19 @@ management:
       #show-details: always 
 #app: 
   #unified-response-enabled: false #是否开启统一响应处理     默认：true，即开启
+
+# 应用自定义配置      
+app:
+       # 开启 swagger 文档功能  
+  swagger2-enabled: true 
+      # 是否开启token验证
+  verify-token-enabled: false
+       # 是否开启统一响应处理
+  unified-response-enabled: true
+      # 是否启用防止xss攻击
+  xss-enabled: true
+       # 开启xss防范时排除的URL
+  #xss-exclude-urls:  
 # 日志
 logging: 
   config: classpath:log-config/logback-${spring.profiles.active}.xml

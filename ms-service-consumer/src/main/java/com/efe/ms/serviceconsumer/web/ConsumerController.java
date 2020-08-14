@@ -33,6 +33,9 @@ public class ConsumerController {
 	@Value("${configValue:}")
 	private String configValue;
 	
+	@Value("${server.port:}")
+	private String serverPort;
+	
 	@Autowired
 	private ConsumerService consumerService;
 	
@@ -43,7 +46,7 @@ public class ConsumerController {
 	
 	@GetMapping("/name")
 	public String index(){
-		return "this is service-consumer.";
+		return "this is service-consumer,server port:" + serverPort;
 	}
 	
 	@ApiOperation(value="获取公共配置")
