@@ -19,7 +19,7 @@ import com.efe.ms.common.util.JWTUtil;
 @RestController
 public class IndexController {
 	
-	@Value("${app.welcome: welcome to zuul gateway}")
+	@Value("${app.welcome: welcome to zuul gateway 撒的速度}")
 	private String welcomeStr;
 	
 	@Autowired

@@ -51,10 +51,21 @@ zuul:
       path: /myproducts/**  
       sensitive-headers:      - Cookie
       - Set-Cookie
+  #ribbon:
+    #eager-load:      #enabled: false
+              
+hystrix:
+  command:
+    default: 
+      execution:
+        isolation: 
+          thread:
+            timeoutInMilliseconds: 60000 # 上传大文件时，需要将超时时间设置大些      
       
 ribbon: 
   ReadTimeout: 30000
   ConnectTimeout: 30000
+  SocketTimeout: 30000
   # ribbon 饥饿加载（由于赖加载各个服务实例信息，导致第一次请求耗时过长）
   #eager-load:    #enabled: true
     #clients:    #- auth-service     
