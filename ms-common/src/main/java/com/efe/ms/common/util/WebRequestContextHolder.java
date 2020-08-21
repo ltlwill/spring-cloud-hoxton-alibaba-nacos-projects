@@ -20,12 +20,19 @@ public final class WebRequestContextHolder {
 		userInfoHolder.set(userInfo);
 	}
 	
+	public static void removeUserInfo() {
+		userInfoHolder.remove();
+	}
+	
 	public static String getUserId(){
 		return userIdHolder.get();
 	}
 	
 	public static void setUserId(String userId){
 		userIdHolder.set(userId);
+	}
+	public static void removeUserId(String userId){
+		userIdHolder.remove();
 	}
 
 }

@@ -24,6 +24,7 @@ public class RequestMatcherUtil {
 			return false;
 		}
 		String url = request.getServletPath();
+		url = url == null ? "" : (url.endsWith("/") ? url.substring(0, url.lastIndexOf("/")) : url);
 		if(url == null || "".equals(url.trim()) || "/".equals(url.trim())) {
 			return true;
 		}
@@ -35,7 +36,6 @@ public class RequestMatcherUtil {
 		}
 		return false;
 	}
-	
 	
 	private static AppConfiguration getAppConfiguration() {
 		if(cfg == null) {

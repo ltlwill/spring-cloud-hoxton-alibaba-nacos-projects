@@ -12,8 +12,8 @@ public class AlgorithmTest {
 	@Test
 	public void test1() {
 		String str = "abcd111";
-		System.out.println(SHAEncryptUtil.SHA256(str));
-		System.out.println(SHAEncryptUtil.SHA512(str));
+		System.out.println(SHAEncryptUtil.sha256(str));
+		System.out.println(SHAEncryptUtil.sha512(str));
 	}
 	
 	/**

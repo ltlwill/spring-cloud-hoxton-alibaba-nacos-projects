@@ -3,6 +3,11 @@ package com.efe.ms.common.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Hex;
+
 /**
  * SHA加解密工具类
  * @author Tianlong Liu
@@ -10,7 +15,9 @@ import java.security.NoSuchAlgorithmException;
  */
 public final class SHAEncryptUtil {
 
+	public static final String DEFAULT_CHARSET = "UTF-8";
 	public static final String ALGORITHM_SHA_256 = "SHA-256";
+	public static final String ALGORITHM_HMAC_SHA_256 = "HmacSHA256";
 	public static final String ALGORITHM_SHA_512 = "SHA-512";
 
 	/**
@@ -18,8 +25,18 @@ public final class SHAEncryptUtil {
 	 * @param strText
 	 * @return 加密结果
 	 */
-	public static String SHA256(final String strText) {
-		return SHA(strText, ALGORITHM_SHA_256);
+	public static String sha256(final String strText) {
+		return sha(strText, ALGORITHM_SHA_256);
+	}
+	
+	/**
+	 * HmacSHA256 加密
+	 * @param strText
+	 * @param key
+	 * @return
+	 */
+	public static String hmacSha256(final String strText,final String key) {
+		return hmacSha256Encrypt(strText, key,ALGORITHM_HMAC_SHA_256);
 	}
 
 	/**
@@ -27,8 +44,8 @@ public final class SHAEncryptUtil {
 	 * @param strText
 	 * @return
 	 */
-	public static String SHA512(final String strText) {
-		return SHA(strText, ALGORITHM_SHA_512);
+	public static String sha512(final String strText) {
+		return sha(strText, ALGORITHM_SHA_512);
 	}
 
 	/**
@@ -37,7 +54,7 @@ public final class SHAEncryptUtil {
 	 * @param strType
 	 * @return 加密结果
 	 */
-	private static String SHA(final String strText, final String algorithm) {
+	private static String sha(final String strText, final String algorithm) {
 		String strResult = null;
 		if (strText != null && strText.length() > 0) {
 			try {
@@ -58,5 +75,16 @@ public final class SHAEncryptUtil {
 			}
 		}
 		return strResult;
+	}
+	
+	public static String hmacSha256Encrypt(String content, String key,String algorithm) {
+		try {
+			Mac hmac256 = Mac.getInstance(algorithm);
+			SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(DEFAULT_CHARSET), algorithm);
+			hmac256.init(secretKey);
+			return Hex.encodeHexString(hmac256.doFinal(content.getBytes(DEFAULT_CHARSET)));
+		} catch (Exception e) {
+			throw new RuntimeException(algorithm + " 算法加密失败", e);
+		}
 	}
 }
