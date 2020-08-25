@@ -33,6 +33,8 @@ zuul:
   sensitive-headers:  - Cookie
   - Set-Cookie
   - Authorization  
+       # 不设置忽略这些请求头，会出现Access-Control-Allow-Credentials等属性重复的异常，导致跨域设置不生效，前端请求出现跨域错误
+  ignored-headers: Access-Control-Allow-Credentials,Access-Control-Allow-Origin,Vary,X-Frame-Options
        # 支持动态刷新路由信息，详见：com.efe.ms.zuulgateway.config.ZuuDynamicRoutesConfig
   #ignored-services:  #- aaaaaa-service
   #- bbbbbb-service     
