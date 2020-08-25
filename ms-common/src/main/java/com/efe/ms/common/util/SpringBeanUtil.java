@@ -66,7 +66,8 @@ public class SpringBeanUtil implements ApplicationContextAware {
 
 	private static void check() {
 		if (applicationContext == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(
+					"applicationContext参数未注入,未定义SpringContextHolder,请在springContext.xml中或注解定义");
 		}
 	}
 

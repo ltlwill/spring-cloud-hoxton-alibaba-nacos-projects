@@ -12,10 +12,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.alibaba.fastjson.JSON;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -31,8 +27,6 @@ import okhttp3.ResponseBody;
  * @author Tianlong Liu 2020年8月21日 下午12:01:57
  */
 public final class OkHttpRequestUtil {
-
-	protected static final Logger LOGGER = LoggerFactory.getLogger(OkHttpRequestUtil.class);
 
 	protected static final String DEFAULT_CHARSET = "UTF-8";
 	protected static final String DEFAULT_ALGORITHM_NAME = "HmacSHA256";
@@ -133,11 +127,11 @@ public final class OkHttpRequestUtil {
 	}
 
 	public static Response doPost(String url, String jsonBody) {
-		return doRequest(createPostRequest(url, null, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+		return doRequest(createPostRequest(url, null, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static Response doPost(String url, Map<String, String> headers, String jsonBody) {
-		return doRequest(createPostRequest(url, headers, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+		return doRequest(createPostRequest(url, headers, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static String doPostAsString(String url, RequestBody body) {
@@ -149,12 +143,12 @@ public final class OkHttpRequestUtil {
 	}
 
 	public static String doPostAsString(String url, String jsonBody) {
-		return doRequestAsString(createPostRequest(url, null, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+		return doRequestAsString(createPostRequest(url, null, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static String doPostAsString(String url, Map<String, String> headers, String jsonBody) {
 		return doRequestAsString(
-				createPostRequest(url, headers, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+				createPostRequest(url, headers, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static Response doPut(String url, RequestBody body) {
@@ -166,11 +160,11 @@ public final class OkHttpRequestUtil {
 	}
 
 	public static Response doPut(String url, String jsonBody) {
-		return doRequest(createPutRequest(url, null, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+		return doRequest(createPutRequest(url, null, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static Response doPut(String url, Map<String, String> headers, String jsonBody) {
-		return doRequest(createPutRequest(url, headers, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+		return doRequest(createPutRequest(url, headers, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static String doPutAsString(String url, RequestBody body) {
@@ -182,14 +176,22 @@ public final class OkHttpRequestUtil {
 	}
 
 	public static String doPutAsString(String url, String jsonBody) {
-		return doRequestAsString(createPutRequest(url, null, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+		return doRequestAsString(createPutRequest(url, null, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static String doPutAsString(String url, Map<String, String> headers, String jsonBody) {
 		return doRequestAsString(
-				createPutRequest(url, headers, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+				createPutRequest(url, headers, createApplicationJSONBody(jsonBody)));
 	}
 
+	public static Response doDelete(String url) {
+		return doRequest(createDeleteRequest(url, null));
+	}
+	
+	public static Response doDelete(String url, Map<String, String> headers) {
+		return doRequest(createDeleteRequest(url, headers));
+	}
+	
 	public static Response doDelete(String url, RequestBody body) {
 		return doRequest(createDeleteRequest(url, null, body));
 	}
@@ -199,11 +201,11 @@ public final class OkHttpRequestUtil {
 	}
 
 	public static Response doDelete(String url, String jsonBody) {
-		return doRequest(createDeleteRequest(url, null, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+		return doRequest(createDeleteRequest(url, null, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static Response doDelete(String url, Map<String, String> headers, String jsonBody) {
-		return doRequest(createDeleteRequest(url, headers, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+		return doRequest(createDeleteRequest(url, headers, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static String doDeleteAsString(String url, RequestBody body) {
@@ -216,12 +218,12 @@ public final class OkHttpRequestUtil {
 
 	public static String doDeleteAsString(String url, String jsonBody) {
 		return doRequestAsString(
-				createDeleteRequest(url, null, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+				createDeleteRequest(url, null, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static String doDeleteAsString(String url, Map<String, String> headers, String jsonBody) {
 		return doRequestAsString(
-				createDeleteRequest(url, headers, createApplicationJSONBody(JSON.toJSONString(jsonBody))));
+				createDeleteRequest(url, headers, createApplicationJSONBody(jsonBody)));
 	}
 
 	public static Response doRequest(Request request) {
@@ -253,7 +255,6 @@ public final class OkHttpRequestUtil {
 				result.append(s);
 			}
 		} catch (Exception e) {
-			LOGGER.error("okhttp read the response body error", e);
 			throw new RuntimeException(e);
 		} finally {
 			if (is != null) {
@@ -287,6 +288,10 @@ public final class OkHttpRequestUtil {
 	public static Request createDeleteRequest(String url, Map<String, String> headers, RequestBody body) {
 		return addHeaders(createBuilder(url), headers).delete(body).build();
 	}
+	
+	public static Request createDeleteRequest(String url, Map<String, String> headers) {
+		return addHeaders(createBuilder(url), headers).delete().build();
+	}
 
 	public static Builder createBuilder(String url) {
 		return new Request.Builder().url(url);
@@ -299,9 +304,9 @@ public final class OkHttpRequestUtil {
 		headers.forEach((key, value) -> builder.addHeader(key, value));
 		return builder;
 	}
-	
-	public static String addGetParameters(String url,Map<String,String> parameters) {
-		if(url == null || "".equals(url.trim()) || parameters == null || parameters.size() == 0) {
+
+	public static String addGetParameters(String url, Map<String, String> parameters) {
+		if (url == null || "".equals(url.trim()) || parameters == null || parameters.size() == 0) {
 			return url;
 		}
 		Set<Map.Entry<String, String>> set = parameters.entrySet();
@@ -310,11 +315,14 @@ public final class OkHttpRequestUtil {
 		String name = null;
 		while (iterator.hasNext()) {
 			entry = iterator.next();
+			if(entry.getValue() == null) {
+				continue;
+			}
 			name = entry.getKey() + "=" + entry.getValue();
 			if (!url.contains("?")) {
 				url += "?";
 			}
-			url += "&" + name;
+			url += url.endsWith("&") ? name : "&" + name;
 		}
 		return url;
 	}

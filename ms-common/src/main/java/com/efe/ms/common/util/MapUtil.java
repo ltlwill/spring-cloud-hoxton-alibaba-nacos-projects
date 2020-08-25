@@ -33,6 +33,19 @@ public class MapUtil {
 		}
 		return map;
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Map<String, String> beanToStringMap(Object object) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		
+		Class cls = object.getClass();
+		Field[] fields = cls.getDeclaredFields();
+		for (Field field : fields) {
+			field.setAccessible(true);
+			map.put(field.getName(), field.get(object) == null ? null : field.get(object).toString());
+		}
+		return map;
+	}
 
 	public static Map<String, Object> beansToMap(Object... objects)
 			throws Exception {
