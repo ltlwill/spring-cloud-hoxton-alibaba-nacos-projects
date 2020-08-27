@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -32,6 +33,7 @@ public final class OkHttpRequestUtil {
 	protected static final String DEFAULT_ALGORITHM_NAME = "HmacSHA256";
 	protected static final String HTTP_PREFIX = "http://";
 	protected static final String HTTPS_PREFIX = "https://";
+	protected static final long DEFAULT_TIMEOUT_MINUTES = 10; // 默认超时10分钟
 
 	public static final class ContentType {
 		public static final MediaType TEXT_PLAIN = MediaType.parse(org.springframework.http.MediaType.TEXT_PLAIN_VALUE);
@@ -228,7 +230,11 @@ public final class OkHttpRequestUtil {
 
 	public static Response doRequest(Request request) {
 		try {
-			return new OkHttpClient().newCall(request).execute();
+			return new OkHttpClient.Builder()
+					.callTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
+					.connectTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
+					.readTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
+					.build().newCall(request).execute();
 		} catch (IOException e) {
 			throw new RuntimeException("okhttp请求失败", e);
 		}
