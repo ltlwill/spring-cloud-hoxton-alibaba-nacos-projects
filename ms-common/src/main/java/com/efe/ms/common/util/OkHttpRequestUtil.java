@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -58,7 +58,7 @@ public final class OkHttpRequestUtil {
 	 * @param content
 	 * @return
 	 */
-	public static RequestBody crateTextPlainBody(String content) {
+	public static RequestBody createTextPlainBody(String content) {
 		return createBody(ContentType.TEXT_PLAIN, content);
 	}
 
@@ -236,7 +236,8 @@ public final class OkHttpRequestUtil {
 					.callTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
 					.connectTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
 					.readTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
-					.connectionSpecs(Collections.singletonList(new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS).build()))
+//					.connectionSpecs(Collections.singletonList(new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS).build()))
+					.connectionSpecs(Arrays.asList(ConnectionSpec.MODERN_TLS,ConnectionSpec.COMPATIBLE_TLS,ConnectionSpec.CLEARTEXT))
 					.build().newCall(request).execute();
 		} catch (IOException e) {
 			throw new RuntimeException("okhttp请求失败", e);
