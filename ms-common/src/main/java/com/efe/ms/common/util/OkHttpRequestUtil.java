@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
 
+import okhttp3.ConnectionSpec;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -234,6 +236,7 @@ public final class OkHttpRequestUtil {
 					.callTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
 					.connectTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
 					.readTimeout(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
+					.connectionSpecs(Collections.singletonList(new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS).build()))
 					.build().newCall(request).execute();
 		} catch (IOException e) {
 			throw new RuntimeException("okhttp请求失败", e);
