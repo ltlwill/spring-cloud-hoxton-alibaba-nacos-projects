@@ -49,6 +49,8 @@ ribbon:
   # config for tx-lcn
   MaxAutoRetriesNextServer: 0
 feign:
+  httpclient: 
+    connection-timeout: 180000  
   # enabling the request or response GZIP compression for your Feign requests 
   compression:
     request:
