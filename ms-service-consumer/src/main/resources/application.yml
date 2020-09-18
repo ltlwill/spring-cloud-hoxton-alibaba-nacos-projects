@@ -43,6 +43,9 @@ hystrix:
           thread:
             timeoutInMilliseconds: 9000        
 feign:
+  okhttp:    enabled: true # 使用okhttp请求
+  httpclient:    enabled: false # 不使用httpclick请求
+    connection-timeout: 18000  
   # enabling the request or response GZIP compression for your Feign requests 
   compression:
     request:
@@ -51,6 +54,7 @@ feign:
       min-request-size: 2048
     response: 
       enabled: true   
+      useGzipDecoder: true
 # 应用自定义配置      
 app:
        # 开启 swagger 文档功能  
