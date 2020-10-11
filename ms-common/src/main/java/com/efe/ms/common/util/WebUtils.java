@@ -31,6 +31,7 @@ import javax.net.ssl.X509TrustManager;
 import org.apache.commons.lang3.StringUtils;
 
 import com.alibaba.fastjson.JSON;
+
 /**
  * 网络工具类。
  *
@@ -69,27 +70,30 @@ public abstract class WebUtils {
 	/**
 	 * 执行HTTP POST请求。
 	 *
-	 * @param url 请求地址
+	 * @param url    请求地址
 	 * @param params 请求参数
 	 * @return 响应字符串
 	 */
-	public static String doPost(String url, Map<String, String> params, int connectTimeout, int readTimeout) throws IOException {
+	public static String doPost(String url, Map<String, String> params, int connectTimeout, int readTimeout)
+			throws IOException {
 		return doPost(url, params, DEFAULT_CHARSET, connectTimeout, readTimeout);
 	}
 
 	/**
 	 * 执行HTTP POST请求。
 	 *
-	 * @param url 请求地址
-	 * @param params 请求参数
+	 * @param url     请求地址
+	 * @param params  请求参数
 	 * @param charset 字符集，如UTF-8, GBK, GB2312
 	 * @return 响应字符串
 	 */
-	public static String doPost(String url, Map<String, String> params, String charset, int connectTimeout, int readTimeout) throws IOException {
+	public static String doPost(String url, Map<String, String> params, String charset, int connectTimeout,
+			int readTimeout) throws IOException {
 		return doPost(url, params, charset, connectTimeout, readTimeout, null, null);
 	}
 
-	public static String doPost(String url, Map<String, String> params, String charset, int connectTimeout, int readTimeout, Map<String, String> headerMap, Proxy proxy) throws IOException {
+	public static String doPost(String url, Map<String, String> params, String charset, int connectTimeout,
+			int readTimeout, Map<String, String> headerMap, Proxy proxy) throws IOException {
 		String ctype = "application/x-www-form-urlencoded;charset=" + charset;
 		String query = buildQuery(params, charset);
 		byte[] content = {};
@@ -99,7 +103,8 @@ public abstract class WebUtils {
 		return _doPost(url, ctype, content, connectTimeout, readTimeout, headerMap, proxy);
 	}
 
-	public static String doPost(String url, String apiBody, String charset, int connectTimeout, int readTimeout, Map<String, String> headerMap) throws IOException {
+	public static String doPost(String url, String apiBody, String charset, int connectTimeout, int readTimeout,
+			Map<String, String> headerMap) throws IOException {
 		String ctype = "text/plain;charset=" + charset;
 		byte[] content = apiBody.getBytes(charset);
 		return _doPost(url, ctype, content, connectTimeout, readTimeout, headerMap, null);
@@ -108,29 +113,32 @@ public abstract class WebUtils {
 	/**
 	 * 执行HTTP POST请求。
 	 *
-	 * @param url 请求地址
-	 * @param ctype 请求类型
+	 * @param url     请求地址
+	 * @param ctype   请求类型
 	 * @param content 请求字节数组
 	 * @return 响应字符串
 	 */
-	public static String doPost(String url, String ctype, byte[] content, int connectTimeout, int readTimeout) throws IOException {
+	public static String doPost(String url, String ctype, byte[] content, int connectTimeout, int readTimeout)
+			throws IOException {
 		return _doPost(url, ctype, content, connectTimeout, readTimeout, null, null);
 	}
 
 	/**
 	 * 执行HTTP POST请求。
 	 *
-	 * @param url 请求地址
-	 * @param ctype 请求类型
-	 * @param content 请求字节数组
+	 * @param url       请求地址
+	 * @param ctype     请求类型
+	 * @param content   请求字节数组
 	 * @param headerMap 请求头部参数
 	 * @return 响应字符串
 	 */
-	public static String doPost(String url, String ctype, byte[] content, int connectTimeout, int readTimeout, Map<String, String> headerMap, Proxy proxy) throws IOException {
+	public static String doPost(String url, String ctype, byte[] content, int connectTimeout, int readTimeout,
+			Map<String, String> headerMap, Proxy proxy) throws IOException {
 		return _doPost(url, ctype, content, connectTimeout, readTimeout, headerMap, proxy);
 	}
 
-	private static String _doPost(String url, String ctype, byte[] content, int connectTimeout, int readTimeout, Map<String, String> headerMap, Proxy proxy) throws IOException {
+	private static String _doPost(String url, String ctype, byte[] content, int connectTimeout, int readTimeout,
+			Map<String, String> headerMap, Proxy proxy) throws IOException {
 		HttpURLConnection conn = null;
 		OutputStream out = null;
 		String rsp = null;
@@ -156,11 +164,12 @@ public abstract class WebUtils {
 	/**
 	 * 执行带文件上传的HTTP POST请求。
 	 *
-	 * @param url 请求地址
+	 * @param url        请求地址
 	 * @param fileParams 文件请求参数
 	 * @return 响应字符串
 	 */
-	public static String doPost(String url, Map<String, String> params, Map<String, FileItem> fileParams, int connectTimeout, int readTimeout) throws IOException {
+	public static String doPost(String url, Map<String, String> params, Map<String, FileItem> fileParams,
+			int connectTimeout, int readTimeout) throws IOException {
 		if (fileParams == null || fileParams.isEmpty()) {
 			return doPost(url, params, DEFAULT_CHARSET, connectTimeout, readTimeout);
 		} else {
@@ -168,21 +177,22 @@ public abstract class WebUtils {
 		}
 	}
 
-	public static String doPost(String url, Map<String, String> params, Map<String, FileItem> fileParams, String charset, int connectTimeout, int readTimeout) throws IOException {
+	public static String doPost(String url, Map<String, String> params, Map<String, FileItem> fileParams,
+			String charset, int connectTimeout, int readTimeout) throws IOException {
 		return doPost(url, params, fileParams, charset, connectTimeout, readTimeout, null);
 	}
 
 	/**
 	 * 执行带文件上传的HTTP POST请求。
 	 *
-	 * @param url 请求地址
+	 * @param url        请求地址
 	 * @param fileParams 文件请求参数
-	 * @param charset 字符集，如UTF-8, GBK, GB2312
-	 * @param headerMap 需要传递的header头，可以为空
+	 * @param charset    字符集，如UTF-8, GBK, GB2312
+	 * @param headerMap  需要传递的header头，可以为空
 	 * @return 响应字符串
 	 */
-	public static String doPost(String url, Map<String, String> params, Map<String, FileItem> fileParams, String charset,
-								int connectTimeout, int readTimeout, Map<String, String> headerMap) throws IOException {
+	public static String doPost(String url, Map<String, String> params, Map<String, FileItem> fileParams,
+			String charset, int connectTimeout, int readTimeout, Map<String, String> headerMap) throws IOException {
 		if (fileParams == null || fileParams.isEmpty()) {
 			return doPost(url, params, charset, connectTimeout, readTimeout, headerMap, null);
 		} else {
@@ -191,8 +201,7 @@ public abstract class WebUtils {
 	}
 
 	/**
-	 * 执行请求
-	 * content_type: aplication/json
+	 * 执行请求 content_type: aplication/json
 	 *
 	 * @param url
 	 * @param params
@@ -202,7 +211,8 @@ public abstract class WebUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String doPostWithJson(String url, Map<String, Object> params, String charset, int connectTimeout, int readTimeout) throws IOException {
+	public static String doPostWithJson(String url, Map<String, Object> params, String charset, int connectTimeout,
+			int readTimeout) throws IOException {
 		String ctype = "application/json;charset=" + charset;
 		byte[] content = {};
 
@@ -214,7 +224,7 @@ public abstract class WebUtils {
 	}
 
 	private static String _doPostWithFile(String url, Map<String, String> params, Map<String, FileItem> fileParams,
-										  String charset, int connectTimeout, int readTimeout, Map<String, String> headerMap) throws IOException {
+			String charset, int connectTimeout, int readTimeout, Map<String, String> headerMap) throws IOException {
 		String boundary = String.valueOf(System.nanoTime()); // 随机分隔线
 		HttpURLConnection conn = null;
 		OutputStream out = null;
@@ -242,7 +252,8 @@ public abstract class WebUtils {
 				if (!fileItem.isValid()) {
 					throw new IOException("FileItem is invalid");
 				}
-				byte[] fileBytes = getFileEntry(fileEntry.getKey(), fileItem.getFileName(), fileItem.getMimeType(), charset);
+				byte[] fileBytes = getFileEntry(fileEntry.getKey(), fileItem.getFileName(), fileItem.getMimeType(),
+						charset);
 				out.write(entryBoundaryBytes);
 				out.write(fileBytes);
 				fileItem.write(out);
@@ -273,7 +284,8 @@ public abstract class WebUtils {
 		return entry.toString().getBytes(charset);
 	}
 
-	private static byte[] getFileEntry(String fieldName, String fileName, String mimeType, String charset) throws IOException {
+	private static byte[] getFileEntry(String fieldName, String fileName, String mimeType, String charset)
+			throws IOException {
 		StringBuilder entry = new StringBuilder();
 		entry.append("Content-Disposition:form-data;name=\"");
 		entry.append(fieldName);
@@ -288,7 +300,7 @@ public abstract class WebUtils {
 	/**
 	 * 执行HTTP GET请求。
 	 *
-	 * @param url 请求地址
+	 * @param url    请求地址
 	 * @param params 请求参数
 	 * @return 响应字符串
 	 */
@@ -299,8 +311,8 @@ public abstract class WebUtils {
 	/**
 	 * 执行HTTP GET请求。
 	 *
-	 * @param url 请求地址
-	 * @param params 请求参数
+	 * @param url     请求地址
+	 * @param params  请求参数
 	 * @param charset 字符集，如UTF-8, GBK, GB2312
 	 * @return 响应字符串
 	 */
@@ -322,9 +334,10 @@ public abstract class WebUtils {
 		return rsp;
 	}
 
-	private static HttpURLConnection getConnection(URL url, String method, String ctype, Map<String, String> headerMap, Proxy proxy) throws IOException {
+	private static HttpURLConnection getConnection(URL url, String method, String ctype, Map<String, String> headerMap,
+			Proxy proxy) throws IOException {
 		HttpURLConnection conn = null;
-		if(proxy == null) {
+		if (proxy == null) {
 			conn = (HttpURLConnection) url.openConnection();
 		} else {
 			conn = (HttpURLConnection) url.openConnection(proxy);
@@ -359,9 +372,9 @@ public abstract class WebUtils {
 		conn.setRequestMethod(method);
 		conn.setDoInput(true);
 		conn.setDoOutput(true);
-		if(headerMap != null && headerMap.get(Constants.TOP_HTTP_DNS_HOST) != null){
+		if (headerMap != null && headerMap.get(Constants.TOP_HTTP_DNS_HOST) != null) {
 			conn.setRequestProperty("Host", headerMap.get(Constants.TOP_HTTP_DNS_HOST));
-		}else{
+		} else {
 			conn.setRequestProperty("Host", url.getHost());
 		}
 		conn.setRequestProperty("Accept", "text/xml,text/javascript");
@@ -369,7 +382,7 @@ public abstract class WebUtils {
 		conn.setRequestProperty("Content-Type", ctype);
 		if (headerMap != null) {
 			for (Map.Entry<String, String> entry : headerMap.entrySet()) {
-				if(!Constants.TOP_HTTP_DNS_HOST.equals(entry.getKey())){
+				if (!Constants.TOP_HTTP_DNS_HOST.equals(entry.getKey())) {
 					conn.setRequestProperty(entry.getKey(), entry.getValue());
 				}
 			}
@@ -524,7 +537,7 @@ public abstract class WebUtils {
 	/**
 	 * 使用指定的字符集反编码请求参数值。
 	 *
-	 * @param value 参数值
+	 * @param value   参数值
 	 * @param charset 字符集
 	 * @return 反编码后的参数值
 	 */
@@ -543,7 +556,7 @@ public abstract class WebUtils {
 	/**
 	 * 使用指定的字符集编码请求参数值。
 	 *
-	 * @param value 参数值
+	 * @param value   参数值
 	 * @param charset 字符集
 	 * @return 编码后的参数值
 	 */
@@ -580,7 +593,7 @@ public abstract class WebUtils {
 
 		return result;
 	}
-	
+
 	public static boolean areNotEmpty(String... values) {
 		boolean result = true;
 		if (values == null || values.length == 0) {
@@ -592,7 +605,7 @@ public abstract class WebUtils {
 		}
 		return result;
 	}
-	
+
 	public static class FileItem {
 
 		private Contract contract;
@@ -619,7 +632,7 @@ public abstract class WebUtils {
 		 * 基于文件名和字节数组的构造器。
 		 * 
 		 * @param fileName 文件名
-		 * @param content 文件字节数组
+		 * @param content  文件字节数组
 		 */
 		public FileItem(String fileName, byte[] content) {
 			this(fileName, content, null);
@@ -629,7 +642,7 @@ public abstract class WebUtils {
 		 * 基于文件名、字节数组和媒体类型的构造器。
 		 * 
 		 * @param fileName 文件名
-		 * @param content 文件字节数组
+		 * @param content  文件字节数组
 		 * @param mimeType 媒体类型，如：image/jpeg, text/plain
 		 */
 		public FileItem(String fileName, byte[] content, String mimeType) {
@@ -640,7 +653,7 @@ public abstract class WebUtils {
 		 * 基于文件名和字节流的构造器，适应于全流式上传，减少本地内存开销。
 		 * 
 		 * @param fileName 文件名
-		 * @param content 文件字节流
+		 * @param content  文件字节流
 		 */
 		public FileItem(String fileName, InputStream stream) {
 			this(fileName, stream, null);
@@ -650,7 +663,7 @@ public abstract class WebUtils {
 		 * 基于文件名、字节流和媒体类型的构造器，适应于全流式上传，减少本地内存开销。
 		 * 
 		 * @param fileName 文件名
-		 * @param content 文件字节流
+		 * @param content  文件字节流
 		 * @param mimeType 媒体类型，如：image/jpeg, text/plain
 		 */
 		public FileItem(String fileName, InputStream stream, String mimeType) {
@@ -679,9 +692,13 @@ public abstract class WebUtils {
 
 		private static interface Contract {
 			public boolean isValid();
+
 			public String getFileName();
+
 			public String getMimeType();
+
 			public long getFileLength();
+
 			public void write(OutputStream output) throws IOException;
 		}
 
@@ -808,7 +825,7 @@ public abstract class WebUtils {
 		}
 
 	}
-	
+
 	public static class Constants {
 
 		/** TOP协议入参共享参数 **/
@@ -882,12 +899,12 @@ public abstract class WebUtils {
 
 		/** 异步多活SDK版本号 */
 		public static final String SDK_VERSION_CLUSTER = "top-sdk-java-cluster-20200923";
-		
+
 		/** httpdns SDK版本号 */
-	    public static final String SDK_VERSION_HTTPDNS = "top-sdk-java-httpdns-20200923";
-	    
-	    /** httpdns SDK版本号 */
-	    public static final String QIMEN_SDK_VERSION_HTTPDNS = "top-qimen-sdk-java-httpdns";
+		public static final String SDK_VERSION_HTTPDNS = "top-sdk-java-httpdns-20200923";
+
+		/** httpdns SDK版本号 */
+		public static final String QIMEN_SDK_VERSION_HTTPDNS = "top-qimen-sdk-java-httpdns";
 
 		/** 响应编码 */
 		public static final String ACCEPT_ENCODING = "Accept-Encoding";
@@ -899,9 +916,8 @@ public abstract class WebUtils {
 
 		/** 默认流式读取缓冲区大小 **/
 		public static final int READ_BUFFER_SIZE = 1024 * 4;
-		
-		
-		public static final String  TOP_HTTP_DNS_HOST  = "TOP_HTTP_DNS_HOST";
+
+		public static final String TOP_HTTP_DNS_HOST = "TOP_HTTP_DNS_HOST";
 
 		/** API网关请求content type **/
 		public static final String CONTENT_TYPE_XML = "xml";
