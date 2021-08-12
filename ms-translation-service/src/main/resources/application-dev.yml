@@ -1,0 +1,4 @@
+logging: 
+  level: 
+    root: debug
+    com.alibaba.nacos.client: error

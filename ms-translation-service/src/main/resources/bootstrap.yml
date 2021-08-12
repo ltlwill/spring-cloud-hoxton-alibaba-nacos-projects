@@ -1,0 +1,37 @@
+# nacos 固定值配置
+nacos-server-address-dev: 192.168.13.198:8848
+nacos-server-address-test: 192.168.13.198:8848
+nacos-server-address-pro: 172.18.189.35:8848
+nacos-namespace-dev: 27cbb1e5-f163-47a7-a164-9c16ac4c8781
+nacos-namespace-test: 4a9813b1-b0c8-49c1-ba5c-19f8a88e34ff
+nacos-namespace-pro: c3699743-d8fe-480e-987a-1850b8ae46ff
+
+# spring
+spring:
+  application:
+    name: translation-service
+  profiles:
+    active: dev
+  cloud: 
+    nacos: 
+      server-addr: ${nacos-server-address-${spring.profiles.active}}  
+      username: ms-client-dev
+      password: dev1234
+      discovery: 
+        enabled: false #暂时不注册
+        namespace: ${nacos-namespace-${spring.profiles.active}}
+      config: 
+        enabled: false #暂时不注册 
+        file-extension: yml
+        namespace: ${nacos-namespace-${spring.profiles.active}}
+                            # 共享配置
+        shared-configs:
+        - data-id: common-config.yml
+          group: DEFAULT_GROUP
+          refresh: true
+        - data-id: rabbitmq-config.yml
+          group: DEFAULT_GROUP
+          refresh: true
+        - data-id: redis-config.yml
+          group: DEFAULT_GROUP
+          refresh: true

@@ -1,0 +1,1 @@
+java -Dfile.encoding=UTF-8 -jar target/ms-translation-service-1.0.jar --server.port=8311

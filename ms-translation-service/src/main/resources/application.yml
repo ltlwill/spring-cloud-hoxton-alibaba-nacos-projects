@@ -1,0 +1,55 @@
+server:
+  port: 9310
+  compression:
+    enabled: true
+spring: 
+  #datasource:
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://192.168.x.y:3306/crawler_db?useUnicode=true&characterEncoding=UTF-8&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    #username: user
+    #password: pwd
+    #hikari:
+      #connection-test-query: select 1 from dual
+      
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+
+# 集成MyBatis  
+mybatis:   
+  mapperLocations: classpath*:mybatis/mapper/**/*.xml
+  typeAliasesPackage: com.efe.ms.**.model
+  #configLocation: classpath:mybatis/config/mybatis-config.xml
+  configuration-properties: 
+    # 数据库方言
+    helperDialect: mysql 
+    # RowBounds参数offset作为PageNum使用 - 默认不使用
+    offsetAsPageNum: true 
+    # RowBounds是否进行count查询 - 默认不查询
+    rowBoundsWithCount: true
+    # 当设置为true的时候，如果pagesize设置为0（或RowBounds的limit=0），就不执行分页，返回全部结果
+    pageSizeZero: false
+    # 分页合理化
+    reasonable: false
+    # 是否支持接口参数来传递分页参数，默认false
+    #supportMethodsArguments: true
+    #params: pageNum=pageNumKey;pageSize=pageSizeKey;     
+
+# 应用自定义配置      
+app: 
+       # 是否开启swagger文档（开发、测试环境可以开启，生产环境必须关闭）
+  swagger2-enabled: true 
+      # 在服务建调用时是否启用token验证（开发环境可以关闭，生产环境必须开启）
+  verify-token-enabled: false      
+       
+# 日志
+logging: 
+  config: classpath:log-config/logback-${spring.profiles.active}.xml
+          
