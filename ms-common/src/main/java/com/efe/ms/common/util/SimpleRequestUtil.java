@@ -138,9 +138,16 @@ public final class SimpleRequestUtil {
 		int len = 0;
 		HttpURLConnection conn = null;
 		try {
-			URL url = new URL(UriUtils.encodePath(urlStr, charset));
+			URL url = null;
+			// ? 号不能参与 转码，会转成 %3F，请求资源时会出错，找不到对应的资源
+			if (urlStr.contains("?")) {
+				String prefix = urlStr.substring(0, urlStr.lastIndexOf("?"));
+				String suffix = urlStr.substring(urlStr.lastIndexOf("?") + 1);
+				url = new URL(UriUtils.encodePath(prefix, charset) + "?" + UriUtils.encodePath(suffix, charset));
+			} else {
+				url = new URL(UriUtils.encodePath(urlStr, charset));
+			}
 			conn = (HttpURLConnection) url.openConnection();
-//			conn.setHostnameVerifier(createHostnameVerifier());
 			conn.setRequestProperty("Content-Type", "plain/text;charset=" + charset);
 			conn.setRequestProperty("charset", charset);
 			conn.setDoInput(true);
